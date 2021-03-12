@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import React from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { darkModeVar } from "../../apollo/vars";
 
@@ -26,10 +27,27 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
+  font-family: "Amarillo";
   color: ${(props) => props.theme.color.primary};
 `;
 
-export const AuthPage = () => {
+interface AuthPageProps {
+  isCreating?: boolean;
+}
+
+interface FormElement {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  password2: string;
+}
+
+export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
+  const { register, getValues, formState } = useForm<FormElement>({
+    mode: "onChange",
+  });
+
   return (
     <Container>
       <Title>You need to login.</Title>

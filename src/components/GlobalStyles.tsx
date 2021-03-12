@@ -2,6 +2,13 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export const GlobalStyles = createGlobalStyle`
+@font-face {
+        font-family: 'Amarillo';
+        font-style: normal;
+        font-weight: 300;
+        src: url('fonts/Amarillo.ttf') format('truetype'), 
+             url('fonts/Amarillo.otf') format('opentype');
+    }
     ${reset}
     a{
         text-decoration: none;
