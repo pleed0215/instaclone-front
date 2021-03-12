@@ -1,8 +1,17 @@
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { darkModeVar } from "../../apollo/vars";
+import {
+  MutationCreateAccount,
+  MutationCreateAccountVariables,
+} from "../../codegen/MutationCreateAccount";
+import {
+  MutationLogin,
+  MutationLoginVariables,
+} from "../../codegen/MutationLogin";
+import { LayoutContainer } from "../../components/LayoutContainer";
 
 const GQL_CREATE_ACCOUNT = gql`
   mutation MutationCreateAccount($input: CreateAccountInput!) {
@@ -22,13 +31,14 @@ const GQL_LOGIN = gql`
   }
 `;
 
-const Container = styled.div`
-  background-color: ${(props) => props.theme.background.primary};
+const Container = styled(LayoutContainer)`
+  width: 100%;
+  background-color: red;
 `;
 
 const Title = styled.h1`
   font-family: "Amarillo";
-  color: ${(props) => props.theme.color.primary};
+  margin-top: 30px;
 `;
 
 interface AuthPageProps {
@@ -47,12 +57,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
   const { register, getValues, formState } = useForm<FormElement>({
     mode: "onChange",
   });
+  const [createAccount] = useMutation<
+    MutationCreateAccount,
+    MutationCreateAccountVariables
+  >(GQL_CREATE_ACCOUNT);
+  const [login] = useMutation<MutationLogin, MutationLoginVariables>(GQL_LOGIN);
 
   return (
     <Container>
       <Title>You need to login.</Title>
-      <button onClick={() => darkModeVar(true)}>To Dark</button>
-      <button onClick={() => darkModeVar(false)}>To Light</button>
     </Container>
   );
 };
