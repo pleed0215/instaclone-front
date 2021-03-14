@@ -103,7 +103,7 @@ interface FormElement {
 }
 
 export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
-  const { register, getValues, formState, errors } = useForm<FormElement>({
+  const { register, getValues, formState, errors, handleSubmit } = useForm<FormElement>({
     mode: "onChange",
   });
   const [createAccount] = useMutation<
@@ -111,10 +111,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
     MutationCreateAccountVariables
   >(GQL_CREATE_ACCOUNT);
   const [login] = useMutation<MutationLogin, MutationLoginVariables>(GQL_LOGIN);
+  const onSubmit = () => {
+    console.log(getValues());
+  }
 
   return (
     <Container>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit(onSubmit)}>
         <Title>Instagram</Title>
         <InputContainer>
           <InputWrapper>
