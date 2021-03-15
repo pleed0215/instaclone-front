@@ -1,16 +1,12 @@
 import { gql, useMutation } from "@apollo/client";
-import {
-  faFacebook,
-  faFacebookF,
-  faFacebookSquare,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { darkModeVar, makeLogin } from "../../apollo/vars";
+import { makeLogin } from "../../apollo/vars";
 import {
   MutationCreateAccount,
   MutationCreateAccountVariables,
@@ -202,7 +198,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
     }
   );
   const onSubmit = () => {
-    const { username, password, password2, firstName, email } = getValues();
+    const { username, password, firstName, email } = getValues();
     setLoading(true);
     if (isCreating) {
       createAccount({

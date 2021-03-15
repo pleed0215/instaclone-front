@@ -2,12 +2,11 @@ import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
-  makeVar,
   split,
 } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { setContext } from "@apollo/client/link/context";
-import { AUTH_TOKEN_NAME } from "../constants";
+
 import { getMainDefinition } from "@apollo/client/utilities";
 import { authTokenVar } from "./vars";
 
