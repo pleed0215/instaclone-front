@@ -26,6 +26,9 @@ const LogoContainer = styled.div`
 const SearchContainer = styled.div``;
 const MenuContainer = styled.div`
   flex: 1 0 0%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Header: React.FC = () => {
@@ -33,7 +36,7 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Container>
         <LogoContainer>
-          <img src="/instalogo.png" />
+          <img alt="instagram logo" src="/instalogo.png" />
         </LogoContainer>
         <SearchContainer>
           <input type="text" />
