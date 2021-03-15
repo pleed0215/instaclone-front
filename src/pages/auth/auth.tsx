@@ -104,6 +104,7 @@ const SpanUnderLogo = styled.span`
   font-size: 1.3rem;
   color: gray;
   font-weight: bold;
+  text-align: center;
 `;
 
 const Input = styled.input`
