@@ -4,9 +4,11 @@ export const lightTheme: DefaultTheme = {
   color: {
     primary: "black",
     secondary: "#880e4f",
+    border: "rgb(219,219,219)",
+    link: "#0095f6",
   },
   background: {
-    primary: "#eee",
+    primary: "#fff",
     secondary: "#f8e9f1",
   },
 };
@@ -14,6 +16,8 @@ export const darkTheme: DefaultTheme = {
   color: {
     primary: "#eee",
     secondary: "#880e4f",
+    border: "rgb(219,219,219)",
+    link: "#0095f6",
   },
   background: {
     primary: "#333",

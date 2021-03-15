@@ -8,7 +8,10 @@ export const LoggedOutRouter = () => {
     <Router>
       <Switch>
         <Route path="/" exact>
-          <AuthPage />
+          <AuthPage isCreating={false} />
+        </Route>
+        <Route path="/create-account" exact>
+          <AuthPage isCreating={true} />
         </Route>
         <Route>
           <NotFoundPage />

@@ -19,20 +19,12 @@ const Button = styled.button<{ isActive?: boolean }>`
     css`
       pointer-events: none;
     `};
-  background-color: ${(props) => (props.isActive ? "#c0dffd" : "#E0E0E0")};
+  background-color: ${(props) => (props.isActive ? "#4795f6" : "#B2DFFC")};
   color: white;
   outline: none;
   border: none;
   cursor: pointer;
-  &:hover {
-    ${(props) =>
-      props.isActive &&
-      css`
-        background-color: #279b9b;
-      `};
-  }
-  transition: background-color 0.3s;
-  border-radius: 5px;
+  border-radius: 3px;
 `;
 
 export const ButtonInactivable: React.FC<IButtonInactivableType> = ({
