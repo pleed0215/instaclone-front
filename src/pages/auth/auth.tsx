@@ -5,11 +5,12 @@ import {
   faFacebookSquare,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
-import { darkModeVar } from "../../apollo/vars";
+import { darkModeVar, makeLogin } from "../../apollo/vars";
 import {
   MutationCreateAccount,
   MutationCreateAccountVariables,
@@ -21,7 +22,7 @@ import {
 import { BarWithText } from "../../components/BarAndText";
 import { ButtonInactivable } from "../../components/ButtonInactivable";
 import { LayoutContainer } from "../../components/LayoutContainer";
-import { Loader } from "../../components/Loader";
+
 import { EMAIL_REGEX } from "../../utils";
 
 const GQL_CREATE_ACCOUNT = gql`
@@ -37,6 +38,7 @@ const GQL_LOGIN = gql`
   mutation MutationLogin($input: LoginInput!) {
     login(input: $input) {
       ok
+      token
       error
     }
   }
@@ -165,14 +167,63 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
   } = useForm<FormElement>({
     mode: "onChange",
   });
+  const history = useHistory();
   const { isValid, isDirty } = formState;
+  const [loading, setLoading] = useState(false);
   const [createAccount] = useMutation<
     MutationCreateAccount,
     MutationCreateAccountVariables
-  >(GQL_CREATE_ACCOUNT);
-  const [login] = useMutation<MutationLogin, MutationLoginVariables>(GQL_LOGIN);
+  >(GQL_CREATE_ACCOUNT, {
+    onCompleted: (data: MutationCreateAccount) => {
+      setLoading(false);
+      if (data.createAccount.ok) {
+        toast.success("계정이 만들어졌습니다. 로그인 해주세요.");
+        history.push("/");
+      } else {
+        toast.error(
+          `계정 만들기에 실패했습니다.\n에러: ${data.createAccount.error}`
+        );
+      }
+    },
+  });
+  const [login] = useMutation<MutationLogin, MutationLoginVariables>(
+    GQL_LOGIN,
+    {
+      onCompleted: ({ login }: MutationLogin) => {
+        setLoading(false);
+        if (login.ok && login.token) {
+          makeLogin(login.token);
+          toast.success("로그인 하였습니다.");
+        } else {
+          toast.error(`로그인 에러\n에러: ${login.error}`);
+        }
+      },
+    }
+  );
   const onSubmit = () => {
-    console.log(getValues());
+    const { username, password, password2, firstName, email } = getValues();
+    setLoading(true);
+    if (isCreating) {
+      createAccount({
+        variables: {
+          input: {
+            email,
+            password,
+            username,
+            firstName,
+          },
+        },
+      });
+    } else {
+      login({
+        variables: {
+          input: {
+            username,
+            password,
+          },
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -206,39 +257,38 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
             <Input
               ref={register({
                 required: true,
-                pattern: {
-                  value: EMAIL_REGEX,
-                  message: "이메일 주소가 아닙니다.",
+                minLength: {
+                  value: 4,
+                  message: "4글자 이상 입력해주세요",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "20글자 이하로 입력해주세요.",
                 },
               })}
-              name="email"
+              name="username"
               type="text"
-              placeholder="이메일 주소"
+              placeholder="사용자이름"
             />
-            {errors.email && <ErrorMsg>{errors.email.message}</ErrorMsg>}
+            {errors.username && <ErrorMsg>{errors.username.message}</ErrorMsg>}
           </InputWrapper>
+
           {isCreating && (
             <>
               <InputWrapper>
                 <Input
                   ref={register({
                     required: true,
-                    minLength: {
-                      value: 4,
-                      message: "4글자 이상 입력해주세요",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message: "20글자 이하로 입력해주세요.",
+                    pattern: {
+                      value: EMAIL_REGEX,
+                      message: "이메일 주소가 아닙니다.",
                     },
                   })}
-                  name="username"
+                  name="email"
                   type="text"
-                  placeholder="사용자이름"
+                  placeholder="이메일 주소"
                 />
-                {errors.username && (
-                  <ErrorMsg>{errors.username.message}</ErrorMsg>
-                )}
+                {errors.email && <ErrorMsg>{errors.email.message}</ErrorMsg>}
               </InputWrapper>
               <InputWrapper>
                 <Input
@@ -295,6 +345,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
                     value: 18,
                     message: "18글자 이하로 입력해주세요.",
                   },
+                  validate: {
+                    value: (value) =>
+                      value === getValues("password") ||
+                      "패스워드가 일치하지 않습니다.",
+                  },
                 })}
                 name="password2"
                 type="password"
@@ -306,7 +361,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
             </InputWrapper>
           )}
 
-          <ButtonInactivable isActivate={isValid && isDirty} loading={false}>
+          <ButtonInactivable
+            isActivate={isValid && isDirty && !loading}
+            loading={loading}
+          >
             {isCreating ? "계정 만들기" : "로그인"}
           </ButtonInactivable>
         </InputContainer>

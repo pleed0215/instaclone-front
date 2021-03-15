@@ -9,6 +9,9 @@ import { LoggedInRouter } from "./router/logged.in";
 import { LoggedOutRouter } from "./router/logged.out";
 import { darkTheme, lightTheme } from "./theme/theme";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
@@ -27,6 +30,7 @@ function App() {
         <Container>
           <GlobalStyles />
           {isLoggedIn ? <LoggedInRouter /> : <LoggedOutRouter />}
+          <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
         </Container>
       </ThemeProvider>
     </ApolloProvider>
