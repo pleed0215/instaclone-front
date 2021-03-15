@@ -51,10 +51,10 @@ const Container = styled(LayoutContainer)`
   align-items: center;
 `;
 
-const IconFacebook = styled(FontAwesomeIcon)`
+const IconFacebook = styled(FontAwesomeIcon)<{ color: string }>`
   margin-right: 8px;
   background-color: inherit;
-  color: white;
+  color: ${(props) => props.color};
 `;
 
 const SpanFacebook = styled.span`
@@ -186,6 +186,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
       }
     },
   });
+
   const [login] = useMutation<MutationLogin, MutationLoginVariables>(
     GQL_LOGIN,
     {
@@ -246,7 +247,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
               친구들과 사진과 동영상을 보려면 가입하세요.
             </SpanUnderLogo>
             <ButtonInactivable isActivate={true} loading={false}>
-              <IconFacebook icon={faFacebookSquare} />
+              <IconFacebook icon={faFacebookSquare} color="white" />
               <SpanFacebook>페이스북으로 가입~</SpanFacebook>
             </ButtonInactivable>
             <BarWithText text="또는" />
@@ -371,8 +372,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
         {!isCreating && (
           <>
             <BarWithText text="또는" />
+
             <span>
-              <IconFacebook icon={faFacebookSquare} size="1x" />
+              <IconFacebook icon={faFacebookSquare} color="black" />
               페이스북으로 로그인
             </span>
           </>
