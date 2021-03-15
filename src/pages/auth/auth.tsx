@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { makeLogin } from "../../apollo/vars";
+import { darkModeVar, makeLogin } from "../../apollo/vars";
 import {
   MutationCreateAccount,
   MutationCreateAccountVariables,
@@ -73,13 +73,14 @@ const FormContainer = styled.form<{ isCreating: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 350px;
+  max-width: 350px;
+  width: 100%;
   height: ${(props) => (props.isCreating ? "640px" : "380px")};
 
   padding: 1.5rem;
   margin-top: 2rem;
   border: 1px ${(props) => props.theme.color.border} solid;
-  background-color: ${(props) => props.theme.background.primary};
+  background-color: ${(props) => props.theme.background.secondary};
 `;
 
 const InputContainer = styled.div`
@@ -122,12 +123,14 @@ const ErrorMsg = styled.span`
 
 const CAContainer = styled.div`
   display: flex;
-  width: 350px;
+  max-width: 350px;
+  width: 100%;
   height: 63px;
   align-items: center;
   justify-content: center;
   border: 1px ${(props) => props.theme.color.border} solid;
   margin-top: 20px;
+  background-color: ${(props) => props.theme.background.secondary};
 `;
 
 const CASpan = styled.span`
@@ -369,8 +372,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
           <>
             <BarWithText text="또는" />
 
-            <span>
-              <IconFacebook icon={faFacebookSquare} color="black" />
+            <span style={{ fontWeight: 600 }}>
+              <IconFacebook
+                icon={faFacebookSquare}
+                color="rgb(36,81,133)"
+                size="lg"
+              />
               페이스북으로 로그인
             </span>
           </>

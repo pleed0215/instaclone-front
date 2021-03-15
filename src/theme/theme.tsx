@@ -3,25 +3,25 @@ import { DefaultTheme } from "styled-components";
 export const lightTheme: DefaultTheme = {
   color: {
     primary: "black",
-    secondary: "#880e4f",
+    secondary: "rgb(56,81,133)",
     border: "rgb(219,219,219)",
     link: "#0095f6",
   },
   background: {
-    primary: "#fff",
-    secondary: "#f8e9f1",
+    primary: "#fafafa",
+    secondary: "white",
   },
 };
 export const darkTheme: DefaultTheme = {
   color: {
     primary: "#eee",
-    secondary: "#880e4f",
+    secondary: "rgb(56,81,133)",
     border: "rgb(219,219,219)",
     link: "#0095f6",
   },
   background: {
     primary: "#333",
-    secondary: "#c5b7be",
+    secondary: "#454545",
   },
 };
 
