@@ -10,6 +10,8 @@ const Title = styled.h1`
 `;
 
 export const HomePage = () => {
+  const { loading, data, error } = useMe();
+
   return (
     <Container>
       <Title>Hello</Title>
