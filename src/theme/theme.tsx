@@ -12,6 +12,7 @@ export const lightTheme: DefaultTheme = {
     primary: "#fafafa",
     secondary: "white",
     button: "#4795f6",
+    avatar: "#dbdbdb",
   },
 };
 export const darkTheme: DefaultTheme = {
@@ -26,6 +27,7 @@ export const darkTheme: DefaultTheme = {
     primary: "#333",
     secondary: "#454545",
     button: "#4795f6",
+    avatar: "#dbdbdb",
   },
 };
 
