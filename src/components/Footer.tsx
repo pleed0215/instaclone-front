@@ -7,6 +7,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top: 1px solid ${(props) => props.theme.color.border};
 `;
 
 const Layout = styled(LayoutContainer)`

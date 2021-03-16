@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { useMe } from "../hooks/useMe";
 
-const Container = styled.div``;
+const Container = styled.div`
+  min-height: 100vh;
+`;
 
 const Title = styled.h1`
   color: ${(props) => props.theme.color};

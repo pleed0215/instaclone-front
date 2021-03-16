@@ -14,7 +14,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { darkModeVar, setDarkMode } from "../apollo/vars";
+import { useMe } from "../hooks/useMe";
 import { device } from "../theme/theme";
+import { Avatar } from "./Avatar";
 import { LayoutContainer } from "./LayoutContainer";
 import { ToggleSwitch } from "./ToggleSwitch";
 
@@ -107,6 +109,7 @@ export const Header: React.FC = () => {
     setDarkMode(e.target.checked);
   };
   const isDark = useReactiveVar(darkModeVar);
+  const { loading, data: me } = useMe();
 
   return (
     <HeaderContainer>
@@ -141,9 +144,7 @@ export const Header: React.FC = () => {
           <MenuLink to="/activity">
             <IconMenu icon={faCompass} size="lg" />
           </MenuLink>
-          <span>
-            <FontAwesomeIcon icon={faUser} size="lg" />
-          </span>
+          <Avatar url={me?.seeMe.avatar} size="sm" />
           <ToggleDarkContainer>
             <IconSun icon={isDark ? faSun : faMoon} />
             <ToggleSwitch
