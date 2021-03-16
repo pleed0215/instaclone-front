@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-const PART_PHOTO_DETAIL = gql`
-  fragment PartPhotoDetail on Photo {
+export const PART_PHOTO = gql`
+  fragment PartPhoto on Photo {
     id
     user {
       id
