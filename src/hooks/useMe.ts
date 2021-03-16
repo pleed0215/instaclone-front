@@ -15,27 +15,13 @@ export const GQL_ME = gql`
   }
 `;
 
-export const fetchMe = () => {
+export const useMe = () => {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
-  let fetchPromise: Promise<QuerySeeMe_seeMe | string | null> | null = null;
-  useQuery<QuerySeeMe>(GQL_ME, {
+  return useQuery<QuerySeeMe>(GQL_ME, {
     skip: !isLoggedIn,
-    onCompleted: (data: QuerySeeMe) => {
-      fetchPromise = new Promise((resolve, reject) => {
-        if (data.seeMe) {
-          resolve(data.seeMe);
-        } else {
-          makeLogout();
-          reject(
-            "Failed to fetch user profile. Maybe it's authentication problem."
-          );
-        }
-      });
-    },
+    
   });
-  return fetchPromise;
+
 };
 
-export const getMe = async () => {
-  return await fetchMe();
-};
+
