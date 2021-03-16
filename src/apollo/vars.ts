@@ -1,5 +1,5 @@
 import { makeVar } from "@apollo/client";
-import { AUTH_TOKEN_NAME } from "../constants";
+import { AUTH_TOKEN_NAME, DARK_NAME } from "../constants";
 
 export const getTokenFromLS = () => localStorage.getItem(AUTH_TOKEN_NAME);
 export const setTokenToLS = (token: string) =>
@@ -18,4 +18,12 @@ export const makeLogout = () => {
   authTokenVar(null);
 };
 
-export const darkModeVar = makeVar(false);
+const isDarkFromLS = () => localStorage.getItem(DARK_NAME) || "false";
+const setDarkModelToLS = (isDark: boolean) =>
+  localStorage.setItem(DARK_NAME, isDark.toString());
+
+export const darkModeVar = makeVar(isDarkFromLS() === "true");
+export const setDarkMode = (isDark: boolean) => {
+  setDarkModelToLS(isDark);
+  darkModeVar(isDark);
+};

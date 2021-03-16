@@ -20,6 +20,7 @@ const Container = styled.div`
   align-items: center;
   background-color: ${(props) => props.theme.background.primary};
   color: ${(props) => props.theme.color.primary};
+  transition: background-color 0.4s;
 `;
 
 function App() {

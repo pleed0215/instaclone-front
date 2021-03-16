@@ -1,8 +1,11 @@
+import { useReactiveVar } from "@apollo/client";
 import {
   faCommentAlt,
   faHeart,
   faHome,
+  faMoon,
   faSearch,
+  faSun,
   faTimesCircle,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { darkModeVar, setDarkMode } from "../apollo/vars";
 import { LayoutContainer } from "./LayoutContainer";
+import { ToggleSwitch } from "./ToggleSwitch";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -20,6 +25,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  transition: background-color 0.4s;
 `;
 
 const Container = styled(LayoutContainer)`
@@ -45,9 +51,6 @@ const MenuContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  &:not(:last-child) {
-    margin-right: 10px;
-  }
 `;
 
 const MenuLink = styled(Link)`
@@ -81,14 +84,34 @@ const SearchInput = styled.input`
   font-size: 12px;
 `;
 
+const ToggleDarkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  & > :not(:last-child) {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+`;
+
+const IconSun = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.color.primary};
+`;
+
 export const Header: React.FC = () => {
   const [term, setTerm] = useState("");
+  const onDarkModeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setDarkMode(e.target.checked);
+  };
+  const isDark = useReactiveVar(darkModeVar);
 
   return (
     <HeaderContainer>
       <Container>
         <LogoContainer>
-          <img alt="instagram logo" src="/instalogo.png" />
+          <img
+            alt="instagram logo"
+            src={isDark ? "/instalogo_dark.png" : "/instalogo.png"}
+          />
         </LogoContainer>
         <SearchContainer>
           <IconSearch icon={faSearch} size="xs" />
@@ -117,6 +140,13 @@ export const Header: React.FC = () => {
           <span>
             <FontAwesomeIcon icon={faUser} size="lg" />
           </span>
+          <ToggleDarkContainer>
+            <IconSun icon={isDark ? faSun : faMoon} />
+            <ToggleSwitch
+              onChange={onDarkModeChange}
+              defaultChecked={darkModeVar()}
+            />
+          </ToggleDarkContainer>
         </MenuContainer>
       </Container>
     </HeaderContainer>

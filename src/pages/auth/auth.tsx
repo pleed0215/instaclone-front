@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { darkModeVar, makeLogin } from "../../apollo/vars";
+import { makeLogin } from "../../apollo/vars";
 import {
   MutationCreateAccount,
   MutationCreateAccountVariables,
@@ -17,6 +17,7 @@ import {
 } from "../../codegen/MutationLogin";
 import { BarWithText } from "../../components/BarAndText";
 import { ButtonInactivable } from "../../components/ButtonInactivable";
+import { HelmetOnlyTitle } from "../../components/HelmetOnlyTitle";
 import { LayoutContainer } from "../../components/LayoutContainer";
 
 import { EMAIL_REGEX } from "../../utils";
@@ -239,6 +240,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
 
   return (
     <Container>
+      <HelmetOnlyTitle title={`${isCreating ? "Sign up" : "Log in"}`} />
       <FormContainer isCreating={isCreating} onSubmit={handleSubmit(onSubmit)}>
         <Title>Instagram</Title>
         {isCreating && (
