@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { device, breakpoints } from "../theme/theme";
 
 const Container = styled.div`
-  @media ${device.xs} {
-    max-width: ${breakpoints.xs};
+  ${device.xs} {
+    min-width: ${breakpoints.xs};
   }
-  @media ${device.sm} {
+  ${device.sm} {
     max-width: ${breakpoints.sm};
   }
-  @media ${device.md} {
+  ${device.md} {
     max-width: ${breakpoints.md};
   }
-  @media ${device.lg} {
+  ${device.lg} {
     max-width: ${breakpoints.lg};
   }
   /*@media ${device.xl} {

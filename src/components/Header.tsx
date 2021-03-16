@@ -1,7 +1,7 @@
 import { useReactiveVar } from "@apollo/client";
 import {
   faCommentAlt,
-  faHeart,
+  faCompass,
   faHome,
   faMoon,
   faSearch,
@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { darkModeVar, setDarkMode } from "../apollo/vars";
+import { device } from "../theme/theme";
 import { LayoutContainer } from "./LayoutContainer";
 import { ToggleSwitch } from "./ToggleSwitch";
 
@@ -40,6 +41,9 @@ const LogoContainer = styled.div`
   flex: 1 0 0%;
 `;
 const SearchContainer = styled.div`
+  ${device.xs} {
+    display: none;
+  }
   width: 215px;
   flex-shrink: 0;
   position: relative;
@@ -135,7 +139,7 @@ export const Header: React.FC = () => {
             <IconMenu icon={faCommentAlt} size="lg" />
           </MenuLink>
           <MenuLink to="/activity">
-            <IconMenu icon={faHeart} size="lg" />
+            <IconMenu icon={faCompass} size="lg" />
           </MenuLink>
           <span>
             <FontAwesomeIcon icon={faUser} size="lg" />

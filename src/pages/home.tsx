@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useMe } from "../hooks/useMe";
 
 const Container = styled.div``;
 

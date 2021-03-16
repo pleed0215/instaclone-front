@@ -7,6 +7,7 @@ declare module "styled-components" {
       secondary: string;
       border: string;
       link: string;
+      button: string;
       error?: string;
       warning?: string;
       info?: string;
@@ -15,6 +16,7 @@ declare module "styled-components" {
     background: {
       primary: string;
       secondary: string;
+      button: string;
     };
   }
 }

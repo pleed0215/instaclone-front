@@ -6,10 +6,12 @@ export const lightTheme: DefaultTheme = {
     secondary: "rgb(56,81,133)",
     border: "rgb(219,219,219)",
     link: "#0095f6",
+    button: "white",
   },
   background: {
     primary: "#fafafa",
     secondary: "white",
+    button: "#4795f6",
   },
 };
 export const darkTheme: DefaultTheme = {
@@ -18,10 +20,12 @@ export const darkTheme: DefaultTheme = {
     secondary: "rgb(56,81,133)",
     border: "rgb(219,219,219)",
     link: "#0095f6",
+    button: "white",
   },
   background: {
     primary: "#333",
     secondary: "#454545",
+    button: "#4795f6",
   },
 };
 
@@ -36,9 +40,9 @@ export const breakpoints = {
 
 // https://jsramblings.com/how-to-use-media-queries-with-styled-components/
 export const device = {
-  xs: `(max-width: ${breakpoints.sm})`,
-  sm: `(min-width: ${breakpoints.sm})`,
-  md: `(min-width: ${breakpoints.md})`,
-  lg: `(min-width: ${breakpoints.lg})`,
-  xl: `(min-width: ${breakpoints.xl})`,
+  xs: `@media (max-width: ${breakpoints.sm})`,
+  sm: `@media (min-width: ${breakpoints.sm})`,
+  md: `@media (min-width: ${breakpoints.md})`,
+  lg: `@media (min-width: ${breakpoints.lg})`,
+  xl: `@media (min-width: ${breakpoints.xl})`,
 };
