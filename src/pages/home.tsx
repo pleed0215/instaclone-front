@@ -12,8 +12,9 @@ import {
 import { Avatar } from "../components/Avatar";
 import { breakpoints, device } from "../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faComment,  } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {

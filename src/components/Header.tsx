@@ -1,4 +1,4 @@
-import { useReactiveVar } from "@apollo/client";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import {
   faCommentAlt,
   faCompass,
@@ -15,7 +15,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { darkModeVar, makeLogout, setDarkMode } from "../apollo/vars";
 import { useMe } from "../hooks/useMe";
 import { device } from "../theme/theme";

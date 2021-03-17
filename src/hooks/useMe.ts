@@ -19,7 +19,7 @@ export const useMe = () => {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   return useQuery<QuerySeeMe>(GQL_ME, {
     skip: !isLoggedIn,
-    
+    fetchPolicy:  "cache-and-network"
   });
 
 };
