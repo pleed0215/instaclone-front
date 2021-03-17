@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faComment as farComment,
-  faCommentAlt as farCommentAlt,
+  faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
@@ -191,8 +191,8 @@ export const HomePage = () => {
               <PhotoContentContainer>
                 <PhotoMenuContainer>
                   <PhotoMenuItem icon={farHeart} size="2x" />
+                  <PhotoMenuItem icon={farPaperPlane} size="2x" />
                   <PhotoMenuItem icon={farComment} size="2x" />
-                  <PhotoMenuItem icon={farCommentAlt} size="2x" />
                 </PhotoMenuContainer>
                 <SpanNumLike>좋아요 {feed.numLikes}개</SpanNumLike>
               </PhotoContentContainer>

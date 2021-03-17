@@ -1,7 +1,6 @@
 import { useQuery, useReactiveVar } from "@apollo/client";
 import {
-  faCommentAlt,
-  faCompass,
+  faPaperPlane,
   faHome,
   faMoon,
   faSearch,
@@ -17,6 +16,7 @@ import {
   faSun as farSun,
   faTimesCircle as farTimesCircle,
   faUserCircle as farUserCircle,
+  faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
@@ -236,7 +236,7 @@ export const Header: React.FC = () => {
             <IconMenu icon={faHome} size="lg" />
           </MenuLink>
           <MenuLink to="/direct/inbox">
-            <IconMenu icon={farCommentAlt} size="lg" />
+            <IconMenu icon={farPaperPlane} size="lg" />
           </MenuLink>
           <MenuLink to="/activity">
             <IconMenu icon={farCompass} size="lg" />
