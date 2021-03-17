@@ -6,6 +6,11 @@ interface CollapseProps {
   text: string | null;
 }
 
+const Container = styled.div`
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
 const SButton = styled.button`
   color: ${(props) => props.theme.color.secondary};
 `;
@@ -17,9 +22,9 @@ export const Collapse: React.FC<CollapseProps> = ({
 }) => {
   const [fold, setFold] = useState(collapsed);
   return (
-    <div>
+    <Container>
       {!fold && <div>{children}</div>}
       {fold && <SButton onClick={() => setFold(false)}>{text}</SButton>}
-    </div>
+    </Container>
   );
 };

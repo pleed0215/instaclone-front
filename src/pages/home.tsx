@@ -156,6 +156,14 @@ const SpanNumLike = styled.span`
   margin-bottom: 5px;
 `;
 
+const ButtonSeeMoreComment = styled.button`
+  color: ${(props) => props.theme.color.secondary};
+  margin-top: 2px;
+  margin-bottom: 3px;
+  display: inline-block;
+  width: fit-content;
+`;
+
 export const HomePage = () => {
   const { loading, data, error } = useMe();
   const { loading: loadFeed, data: feeds, error: errorFeed } = useQuery<
@@ -169,7 +177,6 @@ export const HomePage = () => {
       },
     },
   });
-  console.log(feeds);
 
   return (
     <Container>
@@ -202,6 +209,9 @@ export const HomePage = () => {
                 <Collapse collapsed={true} text={"...더보기"}>
                   <span>{feed.caption}</span>
                 </Collapse>
+                <ButtonSeeMoreComment>
+                  댓글 {feed.numComments}개 더 보기
+                </ButtonSeeMoreComment>
               </PhotoContentContainer>
             </PhotoItemWrapper>
           ))}
