@@ -5,15 +5,18 @@ import {
   faHome,
   faMoon,
   faSearch,
+  faSignOutAlt,
   faSun,
   faTimesCircle,
   faUser,
+  faUserAlt,
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { darkModeVar, setDarkMode } from "../apollo/vars";
+import styled, { css } from "styled-components";
+import { darkModeVar, makeLogout, setDarkMode } from "../apollo/vars";
 import { useMe } from "../hooks/useMe";
 import { device } from "../theme/theme";
 import { Avatar } from "./Avatar";
@@ -103,13 +106,95 @@ const IconSun = styled(FontAwesomeIcon)`
   color: ${(props) => props.theme.color.primary};
 `;
 
+const AvatarWrapper = styled.button`
+  padding: 0;
+  position: relative;
+`;
+
+const AvatarMenuWrapper = styled.div<{ visible: boolean }>`
+  position: absolute;
+  width: 230px;
+  height: auto;
+  background-color: white;
+  border-radius: 4px;
+  padding: 8px 16px;
+  top: 35px;
+  right: -5px;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+  z-index: 9;
+  display: flex;
+  opacity: ${(props) => (props.visible ? "1" : "0")};
+  transition: opacity 0.4s;
+  flex-direction: column;
+  &:before {
+    content: "";
+    // https://didqk.tistory.com/entry/css-%EB%A1%9C-%EC%82%BC%EA%B0%81%ED%98%95-%EA%B7%B8%EB%A6%AC%EA%B8%B0
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+    border-top: 10px solid none;
+    position: absolute;
+    top: -5px;
+    right: 10px;
+  }
+`;
+
+const AvatarMenuItem = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  &:first-child {
+    margin-right: 10px;
+  }
+`;
+
+const AvatarMenuItemIcon = styled(FontAwesomeIcon)`
+  margin-right: 10px;
+`;
+
+const AvatarMenuSeperator = styled.div`
+  width: 100%;
+  height: 1px;
+  margin: 10px 0px;
+  background-color: ${(props) => props.theme.color.border};
+`;
+
 export const Header: React.FC = () => {
   const [term, setTerm] = useState("");
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menu = useRef<HTMLDivElement>(null);
   const onDarkModeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setDarkMode(e.target.checked);
   };
   const isDark = useReactiveVar(darkModeVar);
   const { loading, data: me } = useMe();
+  let hTimeout: NodeJS.Timeout | null = null;
+  const onToggleMenu = () => {
+    if (menuVisible) {
+      seedMenuCloseTimer();
+    } else {
+      setMenuVisible(true);
+    }
+  };
+  const seedMenuCloseTimer = () => {
+    setMenuVisible(false);
+    hTimeout = setTimeout(() => {
+      if (menu.current) {
+        menu.current.style.display = "none";
+      }
+    }, 400);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hTimeout) {
+        clearTimeout(hTimeout);
+      }
+    };
+  }, []);
 
   return (
     <HeaderContainer>
@@ -144,7 +229,30 @@ export const Header: React.FC = () => {
           <MenuLink to="/activity">
             <IconMenu icon={faCompass} size="lg" />
           </MenuLink>
-          <Avatar url={me?.seeMe.avatar} size="sm" />
+          <AvatarWrapper
+            onClick={() => onToggleMenu()}
+            onBlur={() => seedMenuCloseTimer()}
+          >
+            <Avatar url={me?.seeMe.avatar} size="lg" />
+            {menuVisible && (
+              <AvatarMenuWrapper visible={menuVisible} ref={menu}>
+                <Link to="/me">
+                  <AvatarMenuItem>
+                    <AvatarMenuItemIcon icon={faUserCircle} size="lg" />
+                    <span>프로필</span>
+                  </AvatarMenuItem>
+                </Link>
+                <AvatarMenuSeperator />
+                <AvatarMenuItem>
+                  <button onClick={() => makeLogout()}>
+                    <AvatarMenuItemIcon icon={faSignOutAlt} size="lg" />
+                    <span>로그아웃</span>
+                  </button>
+                </AvatarMenuItem>
+              </AvatarMenuWrapper>
+            )}
+          </AvatarWrapper>
+
           <ToggleDarkContainer>
             <IconSun icon={isDark ? faSun : faMoon} />
             <ToggleSwitch

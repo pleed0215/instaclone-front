@@ -18,7 +18,7 @@ export const lightTheme: DefaultTheme = {
 export const darkTheme: DefaultTheme = {
   color: {
     primary: "#eee",
-    secondary: "rgb(56,81,133)",
+    secondary: "rgb(78,171,205)",
     border: "rgb(219,219,219)",
     link: "#0095f6",
     button: "white",

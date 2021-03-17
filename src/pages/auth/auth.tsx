@@ -48,10 +48,10 @@ const Container = styled(LayoutContainer)`
   align-items: center;
 `;
 
-const IconFacebook = styled(FontAwesomeIcon)<{ color: string }>`
+const IconFacebook = styled(FontAwesomeIcon)`
   margin-right: 8px;
   background-color: inherit;
-  color: ${(props) => props.color};
+  color: ${(props) => props.theme.color.secondary};
 `;
 
 const SpanFacebook = styled.span`
@@ -376,11 +376,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
             <BarWithText text="또는" />
 
             <span style={{ fontWeight: 600 }}>
-              <IconFacebook
-                icon={faFacebookSquare}
-                color="rgb(36,81,133)"
-                size="lg"
-              />
+              <IconFacebook icon={faFacebookSquare} size="lg" />
               페이스북으로 로그인
             </span>
           </>
