@@ -12,9 +12,13 @@ import {
 import { Avatar } from "../components/Avatar";
 import { breakpoints, device } from "../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment,  } from "@fortawesome/free-solid-svg-icons";
-import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
+import {
+  faComment as farComment,
+  faCommentAlt as farCommentAlt,
+} from "@fortawesome/free-regular-svg-icons";
+
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -186,9 +190,9 @@ export const HomePage = () => {
               <Photo url={feed.file} />
               <PhotoContentContainer>
                 <PhotoMenuContainer>
-                  <PhotoMenuItem icon={faHeart} size="2x" />
-                  <PhotoMenuItem icon={faComment} size="2x" />
-                  <PhotoMenuItem icon={faFacebookMessenger} size="2x" />
+                  <PhotoMenuItem icon={farHeart} size="2x" />
+                  <PhotoMenuItem icon={farComment} size="2x" />
+                  <PhotoMenuItem icon={farCommentAlt} size="2x" />
                 </PhotoMenuContainer>
                 <SpanNumLike>좋아요 {feed.numLikes}개</SpanNumLike>
               </PhotoContentContainer>

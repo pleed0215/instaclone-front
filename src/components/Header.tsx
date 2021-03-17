@@ -8,10 +8,16 @@ import {
   faSignOutAlt,
   faSun,
   faTimesCircle,
-  faUser,
-  faUserAlt,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCommentAlt as farCommentAlt,
+  faCompass as farCompass,
+  faMoon as farMoon,
+  faSun as farSun,
+  faTimesCircle as farTimesCircle,
+  faUserCircle as farUserCircle,
+} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -230,10 +236,10 @@ export const Header: React.FC = () => {
             <IconMenu icon={faHome} size="lg" />
           </MenuLink>
           <MenuLink to="/direct/inbox">
-            <IconMenu icon={faCommentAlt} size="lg" />
+            <IconMenu icon={farCommentAlt} size="lg" />
           </MenuLink>
           <MenuLink to="/activity">
-            <IconMenu icon={faCompass} size="lg" />
+            <IconMenu icon={farCompass} size="lg" />
           </MenuLink>
           <AvatarWrapper
             onClick={() => onToggleMenu()}
