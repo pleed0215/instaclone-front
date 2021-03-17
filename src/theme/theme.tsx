@@ -42,9 +42,9 @@ export const breakpoints = {
 
 // https://jsramblings.com/how-to-use-media-queries-with-styled-components/
 export const device = {
-  xs: `@media (max-width: ${breakpoints.sm})`,
-  sm: `@media (min-width: ${breakpoints.sm})`,
-  md: `@media (min-width: ${breakpoints.md})`,
-  lg: `@media (min-width: ${breakpoints.lg})`,
-  xl: `@media (min-width: ${breakpoints.xl})`,
+  xs: `@media screen and (max-width: ${breakpoints.sm})`,
+  sm: `@media screen and (min-width: ${breakpoints.sm})`,
+  md: `@media screen and (min-width: ${breakpoints.md})`,
+  lg: `@media screen and (min-width: ${breakpoints.lg})`,
+  xl: `@media screen and (min-width: ${breakpoints.xl})`,
 };

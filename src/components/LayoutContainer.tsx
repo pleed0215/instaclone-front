@@ -18,6 +18,8 @@ const Container = styled.div`
   /*@media ${device.xl} {
     max-width: ${breakpoints.xl};
   }*/
+  display: flex;
+  width: 100%;
 `;
 
 export const LayoutContainer: React.FC = ({ children, ...props }) => {

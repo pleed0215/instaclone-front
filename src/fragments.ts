@@ -6,6 +6,8 @@ export const PART_PHOTO = gql`
     user {
       id
       username
+      firstName
+      avatar
     }
     caption
     createdAt
