@@ -180,11 +180,17 @@ export const Header: React.FC = () => {
     }
   };
   const seedMenuCloseTimer = () => {
-    setMenuVisible(false);
+    if (menu.current) {
+      menu.current.style.opacity = "0";
+    }
+    if (hTimeout) {
+      clearTimeout(hTimeout);
+    }
     hTimeout = setTimeout(() => {
       if (menu.current) {
         menu.current.style.display = "none";
       }
+      setMenuVisible(false);
     }, 400);
   };
 
