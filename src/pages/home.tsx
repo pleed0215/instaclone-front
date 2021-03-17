@@ -20,6 +20,8 @@ import {
 
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { Collapse } from "../components/Collapse";
+import { CommentItem } from "../components/CommentItem";
+import { timeSince } from "../utils";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -164,6 +166,14 @@ const ButtonSeeMoreComment = styled.button`
   width: fit-content;
 `;
 
+const SpanTimeSince = styled.span`
+  font-size: 13px;
+  font-weight: 300;
+  font-style: italic;
+  margin-top: 3px;
+  margin-bottom: 3px;
+`;
+
 export const HomePage = () => {
   const { loading, data, error } = useMe();
   const { loading: loadFeed, data: feeds, error: errorFeed } = useQuery<
@@ -212,6 +222,14 @@ export const HomePage = () => {
                 <ButtonSeeMoreComment>
                   댓글 {feed.numComments}개 더 보기
                 </ButtonSeeMoreComment>
+                {feed.comments.map((comment) => (
+                  <CommentItem
+                    key={comment.id}
+                    payload={comment.payload}
+                    user={comment.user}
+                  />
+                ))}
+                <SpanTimeSince>{timeSince(feed.createdAt)} ago</SpanTimeSince>
               </PhotoContentContainer>
             </PhotoItemWrapper>
           ))}
