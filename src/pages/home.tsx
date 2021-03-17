@@ -19,6 +19,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import { Collapse } from "../components/Collapse";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -152,6 +153,7 @@ const PhotoMenuItem = styled(FontAwesomeIcon)`
 const SpanNumLike = styled.span`
   font-weight: 400;
   font-size: 14px;
+  margin-bottom: 5px;
 `;
 
 export const HomePage = () => {
@@ -167,6 +169,7 @@ export const HomePage = () => {
       },
     },
   });
+  console.log(feeds);
 
   return (
     <Container>
@@ -195,6 +198,10 @@ export const HomePage = () => {
                   <PhotoMenuItem icon={farComment} size="2x" />
                 </PhotoMenuContainer>
                 <SpanNumLike>좋아요 {feed.numLikes}개</SpanNumLike>
+                <span style={{ fontWeight: "bold" }}>{feed.user.username}</span>
+                <Collapse collapsed={true} text={"...더보기"}>
+                  <span>{feed.caption}</span>
+                </Collapse>
               </PhotoContentContainer>
             </PhotoItemWrapper>
           ))}

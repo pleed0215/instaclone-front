@@ -15,5 +15,15 @@ export const PART_PHOTO = gql`
     isMine
     numLikes
     numComments
+
+    comments(take: 2, orderBy: { createdAt: desc }) {
+      id
+      payload
+      user {
+        id
+        username
+        avatar
+      }
+    }
   }
 `;
