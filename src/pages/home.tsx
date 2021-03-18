@@ -9,23 +9,10 @@ import {
   QuerySeeFeeds,
   QuerySeeFeedsVariables,
 } from "../codegen/QuerySeeFeeds";
-import { Avatar } from "../components/Avatar";
 import { breakpoints, device } from "../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import {
-  faComment as farComment,
-  faPaperPlane as farPaperPlane,
-} from "@fortawesome/free-regular-svg-icons";
-
-import { Collapse } from "../components/Collapse";
-import { CommentItem } from "../components/CommentItem";
-import { timeSince } from "../utils";
-
-import { ButtonInactivable } from "../components/ButtonInactivable";
-
-import { WriteComment } from "../components/WriteComment";
-import { LikeButton } from "../components/LikeButton";
+import { PhotoItem } from "../components/PhotoItem";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -96,121 +83,6 @@ const PhotoItemWrapper = styled.div`
   min-height: 60px;
 `;
 
-const PhotoItemHeader = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 60px;
-  padding: 16px;
-`;
-
-const PhotoItemHeaderUserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-`;
-
-const PhotoItemHeaderUsername = styled.span`
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 3px;
-`;
-
-const PhotoItemHeaderName = styled.span`
-  font-size: 14px;
-`;
-
-const Photo = styled.div<{ url: string }>`
-  ${device.sm} {
-    min-height: ${breakpoints.sm};
-  }
-  ${device.xs} {
-    min-height: ${breakpoints.xs};
-  }
-
-  width: 100%;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${(props) => props.url});
-`;
-
-const PhotoContentContainer = styled.div`
-  width: 100%;
-  padding: 5px 16px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const PhotoMenuContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const PhotoMenuItem = styled(FontAwesomeIcon)`
-  &:not(:last-child) {
-    margin-right: 1rem;
-  }
-  padding: 5px;
-`;
-
-const SpanNumLike = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  margin-bottom: 5px;
-`;
-
-const ButtonSeeMoreComment = styled.button`
-  color: ${(props) => props.theme.color.secondary};
-  margin-top: 2px;
-  margin-bottom: 3px;
-  display: inline-block;
-  width: fit-content;
-`;
-
-const SpanTimeSince = styled.span`
-  font-size: 13px;
-  font-weight: 300;
-  font-style: italic;
-  margin-top: 3px;
-  margin-bottom: 3px;
-`;
-
-const WriteCommentContainer = styled.div`
-  width: 100%;
-  padding: 6px;
-  border-top: 1px solid ${(props) => props.theme.color.border};
-`;
-
-const FormComment = styled.form`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-const ButtonEmoji = styled.button`
-  margin-right: 6px;
-`;
-
-const TextareaComment = styled.textarea`
-  outline: none;
-  border: none;
-  background-color: transparent;
-  resize: none;
-  width: 100%;
-  height: 18px;
-  margin-right: 10px;
-  color: ${(props) => props.theme.color.primary};
-`;
-
-const SubmitButton = styled(ButtonInactivable)`
-  width: 50px;
-`;
-
 export const HomePage = () => {
   const { loading, data, error } = useMe();
   const { loading: loadFeed, data: feeds, error: errorFeed } = useQuery<
@@ -232,44 +104,7 @@ export const HomePage = () => {
         <PhotoContainer>
           <PhotoItemWrapper />
           {feeds.seeFeeds.feeds.map((feed, index) => (
-            <PhotoItemWrapper key={index}>
-              <PhotoItemHeader>
-                <Avatar url={feed.user.avatar} size="lg" />
-                <PhotoItemHeaderUserInfo>
-                  <PhotoItemHeaderUsername>
-                    {feed.user.username}
-                  </PhotoItemHeaderUsername>
-                  <PhotoItemHeaderName>
-                    {feed.user.firstName}
-                  </PhotoItemHeaderName>
-                </PhotoItemHeaderUserInfo>
-              </PhotoItemHeader>
-              <Photo url={feed.file} />
-              <PhotoContentContainer>
-                <PhotoMenuContainer>
-                  <LikeButton photoId={feed.id} isLike={feed.isLiked} />
-                  <PhotoMenuItem icon={farPaperPlane} size="2x" />
-                  <PhotoMenuItem icon={farComment} size="2x" />
-                </PhotoMenuContainer>
-                <SpanNumLike>좋아요 {feed.numLikes}개</SpanNumLike>
-                <span style={{ fontWeight: "bold" }}>{feed.user.username}</span>
-                <Collapse collapsed={true} text={"...더보기"}>
-                  <span>{feed.caption}</span>
-                </Collapse>
-                <ButtonSeeMoreComment>
-                  댓글 {feed.numComments}개 더 보기
-                </ButtonSeeMoreComment>
-                {feed.comments.map((comment) => (
-                  <CommentItem
-                    key={comment.id}
-                    payload={comment.payload}
-                    user={comment.user}
-                  />
-                ))}
-                <SpanTimeSince>{timeSince(feed.createdAt)} ago</SpanTimeSince>
-              </PhotoContentContainer>
-              <WriteComment photoId={feed.id} />
-            </PhotoItemWrapper>
+            <PhotoItem key={index} photo={feed} />
           ))}
         </PhotoContainer>
       )}
