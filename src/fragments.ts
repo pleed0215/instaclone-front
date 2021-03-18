@@ -13,6 +13,7 @@ export const PART_PHOTO = gql`
     createdAt
     file
     isMine
+    isLiked
     numLikes
     numComments
 

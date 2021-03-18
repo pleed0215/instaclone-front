@@ -148,6 +148,7 @@ const PhotoMenuContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   margin-bottom: 10px;
 `;
 
@@ -248,7 +249,7 @@ export const HomePage = () => {
               <Photo url={feed.file} />
               <PhotoContentContainer>
                 <PhotoMenuContainer>
-                  <LikeButton photoId={feed.id} isLike={feed.} />
+                  <LikeButton photoId={feed.id} isLike={feed.isLiked} />
                   <PhotoMenuItem icon={farPaperPlane} size="2x" />
                   <PhotoMenuItem icon={farComment} size="2x" />
                 </PhotoMenuContainer>
