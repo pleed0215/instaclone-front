@@ -2,7 +2,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import {
   MutationToggleLike,
   MutationToggleLikeVariables,
@@ -30,12 +30,23 @@ const SIcon = styled(FontAwesomeIcon)`
 `;
 
 export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
+  const client = useApolloClient();
+  const [like, setLike] = useState(isLike);
   const [toggleLike] = useMutation<
     MutationToggleLike,
     MutationToggleLikeVariables
-  >(GQL_TOGGLE_LIKE);
-
-  const [like, setLike] = useState(isLike);
+  >(GQL_TOGGLE_LIKE, {
+    onCompleted: () => {
+      client.cache.modify({
+        id: `Photo:${photoId}`,
+        fields: {
+          numLikes(prev) {
+            return like ? prev + 1 : prev - 1;
+          },
+        },
+      });
+    },
+  });
 
   const onLikeClicked = () => {
     toggleLike({

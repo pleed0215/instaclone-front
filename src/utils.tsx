@@ -1,3 +1,12 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const SLink = styled(Link)`
+  color: ${(props) => props.theme.color.link};
+  font-weight: 600;
+`;
+
 export const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const timeSince = (date: Date) => {
@@ -52,4 +61,41 @@ export const secondsToTime = (seconds: number) => {
     return Math.floor(interval) + " minutes";
   }
   return Math.floor(seconds) + " seconds";
+};
+
+export const makeLinkText = (text: string) => {
+  const randomNumber = Math.random() * 10000;
+  return text.split(" ").map((word, index) => {
+    if (/#[\w]+/gi.test(word)) {
+      return (
+        <>
+          <SLink
+            key={`${randomNumber}_${index}`}
+            to={`/hashtags/${word.slice(1).toLowerCase()}`}
+          >
+            {word}
+          </SLink>
+          &nbsp;
+        </>
+      );
+    } else if (/@[\w]+/gi.test(word)) {
+      return (
+        <>
+          <SLink
+            key={`${randomNumber}_${index}`}
+            to={`/users/${word.slice(1)}`}
+          >
+            {word}
+          </SLink>
+          &nbsp;
+        </>
+      );
+    } else {
+      return (
+        <React.Fragment key={`${randomNumber}_${index}`}>
+          {word}&nbsp;
+        </React.Fragment>
+      );
+    }
+  });
 };

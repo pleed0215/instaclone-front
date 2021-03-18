@@ -1,5 +1,19 @@
+import { gql } from "@apollo/client";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faRemoveFormat } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
+import { makeLinkText } from "../utils";
+
+const GQL_REMOVE_COMMENT = gql`
+  mutation MutationRemoveComment($input: DeleteCommentInput!) {
+    removeComment(input: $input) {
+      ok
+      error
+    }
+  }
+`;
 
 interface CommentUserProps {
   id: number;
@@ -8,6 +22,7 @@ interface CommentUserProps {
 
 interface CommentItemProps {
   user: CommentUserProps;
+  photoId: number;
   payload: string;
 }
 
@@ -17,6 +32,12 @@ const SpanUsername = styled.span`
 `;
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const SubContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -31,11 +52,27 @@ const SpanComment = styled.span`
   width: 100%;
 `;
 
-export const CommentItem: React.FC<CommentItemProps> = ({ user, payload }) => {
+const ButtonRemove = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    color: ${(props) => props.theme.color.secondary};
+  }
+`;
+
+export const CommentItem: React.FC<CommentItemProps> = ({
+  photoId,
+  user,
+  payload,
+}) => {
+  const [removeComment] = useMutation<MutationRemoveComment, MutationRemoveCommentVariables](GQL_REMOVE_COMMENT);
   return (
     <Container>
-      <SpanUsername>{user.username}</SpanUsername>
-      <SpanComment>{payload}</SpanComment>
+      <SubContainer>
+        <SpanUsername>{user.username}</SpanUsername>
+        <SpanComment>{makeLinkText(payload)}</SpanComment>
+      </SubContainer>
+      <ButtonRemove icon={faTrashAlt} size="sm" />
     </Container>
   );
 };

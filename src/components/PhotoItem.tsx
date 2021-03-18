@@ -7,7 +7,7 @@ import React from "react";
 import styled from "styled-components";
 import { PartPhoto } from "../codegen/PartPhoto";
 import { breakpoints, device } from "../theme/theme";
-import { timeSince } from "../utils";
+import { makeLinkText, timeSince } from "../utils";
 import { Avatar } from "./Avatar";
 import { Collapse } from "./Collapse";
 import { CommentItem } from "./CommentItem";
@@ -133,7 +133,7 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
         <SpanNumLike>좋아요 {photo.numLikes}개</SpanNumLike>
         <span style={{ fontWeight: "bold" }}>{photo.user.username}</span>
         <Collapse collapsed={true} text={"...더보기"}>
-          <span>{photo.caption}</span>
+          <span>{makeLinkText(photo.caption!)}</span>
         </Collapse>
         <ButtonSeeMoreComment>
           댓글 {photo.numComments}개 더 보기
@@ -143,6 +143,7 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
             key={comment.id}
             payload={comment.payload}
             user={comment.user}
+            photoId={photo.id}
           />
         ))}
         <SpanTimeSince>{timeSince(photo.createdAt)} ago</SpanTimeSince>
