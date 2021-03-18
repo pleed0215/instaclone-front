@@ -48,6 +48,7 @@ const TextareaComment = styled.textarea`
   height: 20px;
   margin-right: 10px;
   color: ${(props) => props.theme.color.primary};
+  font-size: 12px;
 `;
 
 const SubmitButton = styled(ButtonInactivable)`

@@ -1,9 +1,14 @@
-import { gql } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faRemoveFormat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
+import { GQL_REFETCH_PHOTO } from "../apollo/refetch";
+import {
+  MutationRemoveComment,
+  MutationRemoveCommentVariables,
+} from "../codegen/MutationRemoveComment";
 import { makeLinkText } from "../utils";
 
 const GQL_REMOVE_COMMENT = gql`
@@ -23,6 +28,7 @@ interface CommentUserProps {
 interface CommentItemProps {
   user: CommentUserProps;
   photoId: number;
+  commentId: number;
   payload: string;
 }
 
@@ -62,17 +68,41 @@ const ButtonRemove = styled(FontAwesomeIcon)`
 
 export const CommentItem: React.FC<CommentItemProps> = ({
   photoId,
+  commentId,
   user,
   payload,
 }) => {
-  const [removeComment] = useMutation<MutationRemoveComment, MutationRemoveCommentVariables](GQL_REMOVE_COMMENT);
+  const [removeComment] = useMutation<
+    MutationRemoveComment,
+    MutationRemoveCommentVariables
+  >(GQL_REMOVE_COMMENT, {
+    refetchQueries: [
+      {
+        query: GQL_REFETCH_PHOTO,
+        variables: {
+          input: {
+            id: photoId,
+          },
+        },
+      },
+    ],
+  });
+  const onRemoveClicked = () => {
+    removeComment({
+      variables: {
+        input: {
+          id: commentId,
+        },
+      },
+    });
+  };
   return (
     <Container>
       <SubContainer>
         <SpanUsername>{user.username}</SpanUsername>
         <SpanComment>{makeLinkText(payload)}</SpanComment>
       </SubContainer>
-      <ButtonRemove icon={faTrashAlt} size="sm" />
+      <ButtonRemove icon={faTrashAlt} size="sm" onClick={onRemoveClicked} />
     </Container>
   );
 };
