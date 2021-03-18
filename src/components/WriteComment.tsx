@@ -135,7 +135,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
           isActivate={!loading && formState.isValid}
           loading={loading}
         >
-          제출
+          게시
         </SubmitButton>
       </FormComment>
     </WriteCommentContainer>

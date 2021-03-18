@@ -15,17 +15,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faComment as farComment,
-  faKissBeam,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 
-import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { Collapse } from "../components/Collapse";
 import { CommentItem } from "../components/CommentItem";
 import { timeSince } from "../utils";
-import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
+
 import { ButtonInactivable } from "../components/ButtonInactivable";
-import { FWIcon } from "../components/FWIcon";
+
 import { WriteComment } from "../components/WriteComment";
 import { LikeButton } from "../components/LikeButton";
 

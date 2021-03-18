@@ -8,7 +8,6 @@ import {
   MutationToggleLikeVariables,
 } from "../codegen/MutationToggleLike";
 import styled from "styled-components";
-import { Loader } from "./Loader";
 
 const GQL_TOGGLE_LIKE = gql`
   mutation MutationToggleLike($input: ToggleLikeInput!) {
@@ -34,16 +33,11 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
   const [toggleLike] = useMutation<
     MutationToggleLike,
     MutationToggleLikeVariables
-  >(GQL_TOGGLE_LIKE, {
-    onCompleted: (data: MutationToggleLike) => {
-      setLoading(false);
-    },
-  });
-  const [loading, setLoading] = useState(false);
+  >(GQL_TOGGLE_LIKE);
+
   const [like, setLike] = useState(isLike);
 
   const onLikeClicked = () => {
-    setLoading(true);
     toggleLike({
       variables: {
         input: {
@@ -54,9 +48,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
     setLike(!like);
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <SIcon icon={like ? faHeart : farHeart} size="2x" onClick={onLikeClicked} />
   );
 };
