@@ -25,6 +25,10 @@ const Container = styled.div`
 const SpanComment = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 export const CommentItem: React.FC<CommentItemProps> = ({ user, payload }) => {

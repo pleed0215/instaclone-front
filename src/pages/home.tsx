@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faComment as farComment,
+  faKissBeam,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 
@@ -23,6 +24,10 @@ import { Collapse } from "../components/Collapse";
 import { CommentItem } from "../components/CommentItem";
 import { timeSince } from "../utils";
 import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
+import { ButtonInactivable } from "../components/ButtonInactivable";
+import { FWIcon } from "../components/FWIcon";
+import { WriteComment } from "../components/WriteComment";
+import { LikeButton } from "../components/LikeButton";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -178,19 +183,34 @@ const SpanTimeSince = styled.span`
 const WriteCommentContainer = styled.div`
   width: 100%;
   padding: 6px;
+  border-top: 1px solid ${(props) => props.theme.color.border};
 `;
 
 const FormComment = styled.form`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: 100%;
 `;
 
 const ButtonEmoji = styled.button`
   margin-right: 6px;
 `;
 
-const TextareaComment = styled.textarea``;
+const TextareaComment = styled.textarea`
+  outline: none;
+  border: none;
+  background-color: transparent;
+  resize: none;
+  width: 100%;
+  height: 18px;
+  margin-right: 10px;
+  color: ${(props) => props.theme.color.primary};
+`;
+
+const SubmitButton = styled(ButtonInactivable)`
+  width: 50px;
+`;
 
 export const HomePage = () => {
   const { loading, data, error } = useMe();
@@ -228,7 +248,7 @@ export const HomePage = () => {
               <Photo url={feed.file} />
               <PhotoContentContainer>
                 <PhotoMenuContainer>
-                  <PhotoMenuItem icon={farHeart} size="2x" />
+                  <LikeButton photoId={feed.id} isLike={feed.} />
                   <PhotoMenuItem icon={farPaperPlane} size="2x" />
                   <PhotoMenuItem icon={farComment} size="2x" />
                 </PhotoMenuContainer>
@@ -249,14 +269,7 @@ export const HomePage = () => {
                 ))}
                 <SpanTimeSince>{timeSince(feed.createdAt)} ago</SpanTimeSince>
               </PhotoContentContainer>
-              <WriteCommentContainer>
-                <FormComment>
-                  <ButtonEmoji>
-                    <FontAwesomeIcon icon={faCreativeCommonsNcJp} />
-                  </ButtonEmoji>
-                  <TextareaComment />
-                </FormComment>
-              </WriteCommentContainer>
+              <WriteComment photoId={feed.id} />
             </PhotoItemWrapper>
           ))}
         </PhotoContainer>
