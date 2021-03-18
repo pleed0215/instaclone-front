@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  margin-top: 4rem;
 `;
 
 export const LoggedInRouter = () => {

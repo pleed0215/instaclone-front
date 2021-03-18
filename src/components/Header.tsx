@@ -36,8 +36,10 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.color.border};
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
   transition: background-color 0.4s;
+  position: fixed;
+  top: 0;
+  z-index: 999;
 `;
 
 const Container = styled(LayoutContainer)`
@@ -266,7 +268,7 @@ export const Header: React.FC = () => {
           </AvatarWrapper>
 
           <ToggleDarkContainer>
-            <IconSun icon={isDark ? faSun : faMoon} />
+            <IconSun icon={isDark ? faMoon : faSun} />
             <ToggleSwitch
               onChange={onDarkModeChange}
               defaultChecked={darkModeVar()}

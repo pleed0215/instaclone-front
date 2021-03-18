@@ -22,6 +22,7 @@ import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { Collapse } from "../components/Collapse";
 import { CommentItem } from "../components/CommentItem";
 import { timeSince } from "../utils";
+import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -174,6 +175,23 @@ const SpanTimeSince = styled.span`
   margin-bottom: 3px;
 `;
 
+const WriteCommentContainer = styled.div`
+  width: 100%;
+  padding: 6px;
+`;
+
+const FormComment = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const ButtonEmoji = styled.button`
+  margin-right: 6px;
+`;
+
+const TextareaComment = styled.textarea``;
+
 export const HomePage = () => {
   const { loading, data, error } = useMe();
   const { loading: loadFeed, data: feeds, error: errorFeed } = useQuery<
@@ -231,6 +249,14 @@ export const HomePage = () => {
                 ))}
                 <SpanTimeSince>{timeSince(feed.createdAt)} ago</SpanTimeSince>
               </PhotoContentContainer>
+              <WriteCommentContainer>
+                <FormComment>
+                  <ButtonEmoji>
+                    <FontAwesomeIcon icon={faCreativeCommonsNcJp} />
+                  </ButtonEmoji>
+                  <TextareaComment />
+                </FormComment>
+              </WriteCommentContainer>
             </PhotoItemWrapper>
           ))}
         </PhotoContainer>
