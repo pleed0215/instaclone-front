@@ -12,6 +12,8 @@ import { authTokenVar } from "./vars";
 
 const HTTP_ENDPOINT = `http://my.yoyang.io:32768/graphql`;
 const WS_ENDPOINT = `ws://my.yoyang.io:32768/graphql`;
+//const HTTP_ENDPOINT = `http://localhost:4000/graphql`;
+//const WS_ENDPOINT = `ws://localhost:4000/graphql`;
 
 const httpLink = createHttpLink({ uri: HTTP_ENDPOINT });
 const wsLink = new WebSocketLink({
