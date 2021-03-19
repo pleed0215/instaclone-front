@@ -20,6 +20,7 @@ export const PART_PHOTO = gql`
     comments(take: 2, orderBy: { createdAt: desc }) {
       id
       payload
+      isMine
       user {
         id
         username

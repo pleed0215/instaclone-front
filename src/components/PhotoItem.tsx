@@ -144,6 +144,7 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
             payload={comment.payload}
             commentId={comment.id}
             user={comment.user}
+            isMine={comment.isMine}
             photoId={photo.id}
           />
         ))}

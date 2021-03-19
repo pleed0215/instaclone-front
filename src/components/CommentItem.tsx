@@ -23,6 +23,7 @@ const GQL_REMOVE_COMMENT = gql`
 interface CommentUserProps {
   id: number;
   username: string;
+  
 }
 
 interface CommentItemProps {
@@ -30,6 +31,7 @@ interface CommentItemProps {
   photoId: number;
   commentId: number;
   payload: string;
+  isMine: boolean;
 }
 
 const SpanUsername = styled.span`
@@ -71,6 +73,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   commentId,
   user,
   payload,
+  isMine,
 }) => {
   const [removeComment] = useMutation<
     MutationRemoveComment,
@@ -102,7 +105,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
         <SpanUsername>{user.username}</SpanUsername>
         <SpanComment>{makeLinkText(payload)}</SpanComment>
       </SubContainer>
-      <ButtonRemove icon={faTrashAlt} size="sm" onClick={onRemoveClicked} />
+      {isMine && <ButtonRemove icon={faTrashAlt} size="sm" onClick={onRemoveClicked} />}
     </Container>
   );
 };
