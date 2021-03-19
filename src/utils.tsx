@@ -64,23 +64,18 @@ export const secondsToTime = (seconds: number) => {
 };
 
 export const makeLinkText = (text: string) => {
-  const randomNumber = Math.random() * 10000;
+  const randomNumber = Math.floor(Math.random() * 10000);
   return text.split(" ").map((word, index) => {
     if (/#[\w]+/gi.test(word)) {
       return (
-        <>
-          <SLink
-            key={`${randomNumber}_${index}`}
-            to={`/hashtags/${word.slice(1).toLowerCase()}`}
-          >
-            {word}
-          </SLink>
+        <React.Fragment key={`${randomNumber}_${index}`}>
+          <SLink to={`/hashtags/${word.slice(1).toLowerCase()}`}>{word}</SLink>
           &nbsp;
-        </>
+        </React.Fragment>
       );
     } else if (/@[\w]+/gi.test(word)) {
       return (
-        <>
+        <React.Fragment key={`${randomNumber}_${index}`}>
           <SLink
             key={`${randomNumber}_${index}`}
             to={`/users/${word.slice(1)}`}
@@ -88,7 +83,7 @@ export const makeLinkText = (text: string) => {
             {word}
           </SLink>
           &nbsp;
-        </>
+        </React.Fragment>
       );
     } else {
       return (
@@ -98,4 +93,11 @@ export const makeLinkText = (text: string) => {
       );
     }
   });
+};
+
+type MouseVerticalPosition = "Upper" | "Bottom";
+export const getMouseVertical = (
+  e: React.MouseEvent
+): MouseVerticalPosition => {
+  return window.innerHeight / 2 > e.screenY ? "Upper" : "Bottom";
 };

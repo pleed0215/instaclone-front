@@ -103,8 +103,8 @@ export const HomePage = () => {
       {!loadFeed && feeds?.seeFeeds.feeds && (
         <PhotoContainer>
           <PhotoItemWrapper />
-          {feeds.seeFeeds.feeds.map((feed, index) => (
-            <PhotoItem key={index} photo={feed} />
+          {feeds.seeFeeds.feeds.map((feed) => (
+            <PhotoItem key={feed.id} photo={feed} />
           ))}
         </PhotoContainer>
       )}

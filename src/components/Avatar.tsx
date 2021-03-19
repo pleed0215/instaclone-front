@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NONAME } from "node:dns";
 import React from "react";
 import styled, { css } from "styled-components";
+import { getMouseVertical } from "../utils";
 
 enum AvatarSize {
   xs = "0.75em",
@@ -19,6 +20,7 @@ type AvatarSizeType = keyof typeof AvatarSize;
 interface AvatarProps {
   url: string | null | undefined;
   size: AvatarSizeType;
+  hoverMenu?: boolean;
 }
 
 const Button = styled.button`
@@ -44,9 +46,13 @@ const AvatarContainer = styled.div<AvatarProps>`
     `};
 `;
 
-export const Avatar: React.FC<AvatarProps> = ({ url, size }) => {
+export const Avatar: React.FC<AvatarProps> = ({
+  url,
+  size,
+  hoverMenu = false,
+}) => {
   return (
-    <AvatarContainer size={size} url={url}>
+    <AvatarContainer size={size} url={url} onMouseEnter={getMouseVertical}>
       {!url && <FontAwesomeIcon icon={faUser} size={size} color="gray" />}
     </AvatarContainer>
   );
