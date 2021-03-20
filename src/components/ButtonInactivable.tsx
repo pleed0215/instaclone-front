@@ -1,10 +1,11 @@
-import React from "react";
+import React, { DetailedHTMLProps, MouseEventHandler } from "react";
 import styled, { css } from "styled-components";
 import { Loader } from "./Loader";
 
 interface IButtonInactivableType {
   isActivate?: boolean;
   loading: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button = styled.button<{ isActive?: boolean }>`
@@ -31,10 +32,10 @@ export const ButtonInactivable: React.FC<IButtonInactivableType> = ({
   children,
   ...props
 }) => {
-  const { isActivate, loading, ...rest } = props;
+  const { isActivate, loading, onClick, ...rest } = props;
 
   return (
-    <Button isActive={isActivate} {...rest}>
+    <Button isActive={isActivate} onClick={onClick} {...rest}>
       {loading ? <Loader /> : children}
     </Button>
   );

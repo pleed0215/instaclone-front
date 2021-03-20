@@ -1,6 +1,5 @@
-import { useQuery, useReactiveVar } from "@apollo/client";
+import { useReactiveVar } from "@apollo/client";
 import {
-  faPaperPlane,
   faHome,
   faMoon,
   faSearch,
@@ -153,6 +152,7 @@ const AvatarMenuItem = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  color: black;
   width: 100%;
   &:first-child {
     margin-right: 10px;
@@ -161,6 +161,10 @@ const AvatarMenuItem = styled.div`
 
 const AvatarMenuItemIcon = styled(FontAwesomeIcon)`
   margin-right: 10px;
+`;
+
+const SpanAvatarMenuItem = styled.span`
+  color: inherit;
 `;
 
 const AvatarMenuSeperator = styled.div`
@@ -214,10 +218,12 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Container>
         <LogoContainer>
-          <img
-            alt="instagram logo"
-            src={isDark ? "/instalogo_dark.png" : "/instalogo.png"}
-          />
+          <Link to="/">
+            <img
+              alt="instagram logo"
+              src={isDark ? "/instalogo_dark.png" : "/instalogo.png"}
+            />
+          </Link>
         </LogoContainer>
         <SearchContainer>
           <IconSearch icon={faSearch} size="xs" />
@@ -250,18 +256,16 @@ export const Header: React.FC = () => {
             <Avatar url={me?.seeMe.avatar} size="lg" />
             {menuVisible && (
               <AvatarMenuWrapper visible={menuVisible} ref={menu}>
-                <Link to="/me">
+                <Link to={`/users/${me?.seeMe.username}`}>
                   <AvatarMenuItem>
                     <AvatarMenuItemIcon icon={faUserCircle} size="lg" />
-                    <span>프로필</span>
+                    <SpanAvatarMenuItem>프로필</SpanAvatarMenuItem>
                   </AvatarMenuItem>
                 </Link>
                 <AvatarMenuSeperator />
-                <AvatarMenuItem>
-                  <button onClick={() => makeLogout()}>
-                    <AvatarMenuItemIcon icon={faSignOutAlt} size="lg" />
-                    <span>로그아웃</span>
-                  </button>
+                <AvatarMenuItem onClick={() => makeLogout()}>
+                  <AvatarMenuItemIcon icon={faSignOutAlt} size="lg" />
+                  <SpanAvatarMenuItem>로그아웃</SpanAvatarMenuItem>
                 </AvatarMenuItem>
               </AvatarMenuWrapper>
             )}

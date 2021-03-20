@@ -13,6 +13,11 @@ enum AvatarSize {
   "3x" = "3em",
   "4x" = "4em",
   "5x" = "5em",
+  "6x" = "6em",
+  "7x" = "7em",
+  "8x" = "8em",
+  "9x" = "9em",
+  "10x" = "10em",
 }
 
 type AvatarSizeType = keyof typeof AvatarSize;

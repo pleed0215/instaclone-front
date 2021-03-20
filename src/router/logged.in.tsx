@@ -4,6 +4,7 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { NotFoundPage } from "../pages/404";
 import { HomePage } from "../pages/home";
+import { UserPage } from "../pages/user";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -12,7 +13,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-top: 4rem;
+  margin-top: 6rem;
+  margin-bottom: 3rem;
 `;
 
 export const LoggedInRouter = () => {
@@ -23,6 +25,9 @@ export const LoggedInRouter = () => {
         <Switch>
           <Route path="/" exact>
             <HomePage />
+          </Route>
+          <Route path="/users/:username" exact>
+            <UserPage />
           </Route>
           <Route>
             <NotFoundPage />

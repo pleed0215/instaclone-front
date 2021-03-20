@@ -18,10 +18,11 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;        
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size: 14px;
-
+        color: ${(props) => props.theme.color.primary};
     }
     button {
-        background-color: transparent;
+        background-color: inherit;
+        color: inherit;
         border: none;
         outline: none;
         cursor: pointer;

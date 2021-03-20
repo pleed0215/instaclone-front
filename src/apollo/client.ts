@@ -48,5 +48,11 @@ const splitLink = split(
 
 export const apolloClient = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        keyFields: (object) => `User: ${object.username}`,
+      },
+    },
+  }),
 });
