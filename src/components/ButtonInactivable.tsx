@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, MouseEventHandler } from "react";
+import React, { MouseEventHandler } from "react";
 import styled, { css } from "styled-components";
 import { Loader } from "./Loader";
 

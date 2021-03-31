@@ -1,6 +1,6 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NONAME } from "node:dns";
+
 import React from "react";
 import styled, { css } from "styled-components";
 import { getMouseVertical } from "../utils";
@@ -28,9 +28,6 @@ interface AvatarProps {
   hoverMenu?: boolean;
 }
 
-const Button = styled.button`
-  background-color: transparent;
-`;
 const AvatarContainer = styled.div<AvatarProps>`
   width: ${(props) => AvatarSize[props.size]};
   height: ${(props) => AvatarSize[props.size]};

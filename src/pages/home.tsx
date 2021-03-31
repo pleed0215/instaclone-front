@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import styled from "styled-components";
-import { useMe } from "../hooks/useMe";
+
 import { PART_PHOTO } from "../fragments";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { Loader } from "../components/Loader";
@@ -10,7 +10,6 @@ import {
   QuerySeeFeedsVariables,
 } from "../codegen/QuerySeeFeeds";
 import { breakpoints, device } from "../theme/theme";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PhotoItem } from "../components/PhotoItem";
 
@@ -84,8 +83,7 @@ const PhotoItemWrapper = styled.div`
 `;
 
 export const HomePage = () => {
-  const { loading, data, error } = useMe();
-  const { loading: loadFeed, data: feeds, error: errorFeed } = useQuery<
+  const { loading: loadFeed, data: feeds } = useQuery<
     QuerySeeFeeds,
     QuerySeeFeedsVariables
   >(GQL_FEED, {

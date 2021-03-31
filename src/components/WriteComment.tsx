@@ -9,7 +9,7 @@ import {
   MutationAddComment,
   MutationAddCommentVariables,
 } from "../codegen/MutationAddComment";
-import { PART_PHOTO } from "../fragments";
+
 import { ButtonInactivable } from "./ButtonInactivable";
 import { FWIcon } from "./FWIcon";
 
@@ -70,7 +70,6 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
     formState,
     getValues,
     setValue,
-    control,
   } = useForm<CommentForm>({ mode: "onChange" });
   const [addComment] = useMutation<
     MutationAddComment,

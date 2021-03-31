@@ -236,7 +236,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
       firstName: "",
       username: "",
     });
-  }, [isCreating]);
+  }, [isCreating, reset]);
 
   return (
     <Container>

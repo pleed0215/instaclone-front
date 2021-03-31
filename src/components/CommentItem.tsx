@@ -1,6 +1,5 @@
-import { gql, useApolloClient, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { faRemoveFormat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
@@ -23,7 +22,6 @@ const GQL_REMOVE_COMMENT = gql`
 interface CommentUserProps {
   id: number;
   username: string;
-  
 }
 
 interface CommentItemProps {
@@ -105,7 +103,9 @@ export const CommentItem: React.FC<CommentItemProps> = ({
         <SpanUsername>{user.username}</SpanUsername>
         <SpanComment>{makeLinkText(payload)}</SpanComment>
       </SubContainer>
-      {isMine && <ButtonRemove icon={faTrashAlt} size="sm" onClick={onRemoveClicked} />}
+      {isMine && (
+        <ButtonRemove icon={faTrashAlt} size="sm" onClick={onRemoveClicked} />
+      )}
     </Container>
   );
 };

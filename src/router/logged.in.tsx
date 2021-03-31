@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import { Footer } from "../components/Footer";
+
 import { Header } from "../components/Header";
 import { NotFoundPage } from "../pages/404";
 import { HomePage } from "../pages/home";

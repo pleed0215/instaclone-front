@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 // reference from: https://www.w3schools.com/howto/howto_css_switch.asp
@@ -61,7 +61,6 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   onChange,
   defaultChecked,
 }) => {
-  const [value, setValue] = useState(false);
   return (
     <Container>
       <CheckBox

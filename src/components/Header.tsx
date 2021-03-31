@@ -9,12 +9,7 @@ import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faCommentAlt as farCommentAlt,
   faCompass as farCompass,
-  faMoon as farMoon,
-  faSun as farSun,
-  faTimesCircle as farTimesCircle,
-  faUserCircle as farUserCircle,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -182,7 +177,7 @@ export const Header: React.FC = () => {
     setDarkMode(e.target.checked);
   };
   const isDark = useReactiveVar(darkModeVar);
-  const { loading, data: me } = useMe();
+  const { data: me } = useMe();
   let hTimeout: NodeJS.Timeout | null = null;
   const onToggleMenu = () => {
     if (menuVisible) {
@@ -212,7 +207,7 @@ export const Header: React.FC = () => {
         clearTimeout(hTimeout);
       }
     };
-  }, []);
+  }, [hTimeout]);
 
   return (
     <HeaderContainer>
