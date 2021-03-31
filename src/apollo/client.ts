@@ -10,8 +10,8 @@ import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { authTokenVar } from "./vars";
 
-const HTTP_ENDPOINT = `http://my.yoyang.io:32768/graphql`;
-const WS_ENDPOINT = `ws://my.yoyang.io:32768/graphql`;
+const HTTP_ENDPOINT = `https://forkstar.herokuapp.com/graphql`;
+const WS_ENDPOINT = `wss://forkstar.herokuapp.com/graphql`;
 //const HTTP_ENDPOINT = `http://localhost:4000/graphql`;
 //const WS_ENDPOINT = `ws://localhost:4000/graphql`;
 
