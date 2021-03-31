@@ -1,6 +1,6 @@
 module.exports = {
   client: {
-    include: ["src/**/*.{tsx,ts}"],
+    include: ["/**/*.{tsx,ts}"],
     tagName: "gql",
     service: {
       name: "Instaclone frontweb from nomadcoders",
@@ -9,3 +9,5 @@ module.exports = {
     },
   },
 };
+
+console.log(module.exports);
