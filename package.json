@@ -37,6 +37,7 @@
     "apollo:codegen": "rimraf src/codegen && apollo client:codegen src/codegen --target typescript --outputFlat",
     "prestart": "npm run apollo:codegen",
     "start": "react-scripts start",
+    "prebuild": "npm run apollo:codegen",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
