@@ -2,6 +2,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import React from "react";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { getMouseVertical } from "../utils";
 
@@ -26,6 +27,7 @@ interface AvatarProps {
   url: string | null | undefined;
   size: AvatarSizeType;
   outline?: boolean;
+  linkable?: boolean;
 }
 
 const AvatarContainer = styled.div<AvatarProps>`
@@ -67,5 +69,62 @@ export const Avatar: React.FC<AvatarProps> = ({
     >
       {!url && <FontAwesomeIcon icon={faUser} size={size} color="gray" />}
     </AvatarContainer>
+  );
+};
+
+interface AvatarAndUsernameProp extends AvatarProps {
+  username: string;
+  firstName?: string;
+}
+const PhotoItemHeader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+  padding: 16px;
+`;
+
+const PhotoItemHeaderUserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+`;
+
+const PhotoItemHeaderUsername = styled.span`
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 3px;
+`;
+
+const PhotoItemHeaderName = styled.span`
+  font-size: 14px;
+`;
+
+export const AvatarAndUsername: React.FC<AvatarAndUsernameProp> = ({
+  url,
+  size,
+  outline,
+  username,
+  firstName,
+  linkable,
+}) => {
+  return linkable ? (
+    <PhotoItemHeader>
+      <Link to={`/users/${username}`} style={{ display: "flex" }}>
+        <Avatar url={url} size="lg" />
+        <PhotoItemHeaderUserInfo>
+          <PhotoItemHeaderUsername>{username}</PhotoItemHeaderUsername>
+          <PhotoItemHeaderName>{firstName}</PhotoItemHeaderName>
+        </PhotoItemHeaderUserInfo>
+      </Link>
+    </PhotoItemHeader>
+  ) : (
+    <PhotoItemHeader>
+      <Avatar url={url} size="lg" />
+      <PhotoItemHeaderUserInfo>
+        <PhotoItemHeaderUsername>{username}</PhotoItemHeaderUsername>
+        <PhotoItemHeaderName>{firstName}</PhotoItemHeaderName>
+      </PhotoItemHeaderUserInfo>
+    </PhotoItemHeader>
   );
 };

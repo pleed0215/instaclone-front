@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Header } from "../components/Header";
 import { NotFoundPage } from "../pages/404";
 import { HomePage } from "../pages/home";
+import { SearchPage } from "../pages/search";
 import { UserPage } from "../pages/user";
 
 const Container = styled.div`
@@ -25,6 +26,9 @@ export const LoggedInRouter = () => {
         <Switch>
           <Route path="/" exact>
             <HomePage />
+          </Route>
+          <Route path="/search" exact>
+            <SearchPage />
           </Route>
           <Route path="/users/:username" exact>
             <UserPage />

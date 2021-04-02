@@ -77,7 +77,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     MutationRemoveComment,
     MutationRemoveCommentVariables
   >(GQL_REMOVE_COMMENT, {
-    refetchQueries: [
+    /*refetchQueries: [
       {
         query: GQL_REFETCH_PHOTO,
         variables: {
@@ -86,7 +86,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
           },
         },
       },
-    ],
+    ],*/
   });
   const onRemoveClicked = () => {
     removeComment({
@@ -94,6 +94,17 @@ export const CommentItem: React.FC<CommentItemProps> = ({
         input: {
           id: commentId,
         },
+      },
+      update: (cache, _) => {
+        cache.evict({ id: `Comment:${commentId}` });
+        cache.modify({
+          id: `Photo:${photoId}`,
+          fields: {
+            numComments(prev) {
+              return prev - 1;
+            },
+          },
+        });
       },
     });
   };

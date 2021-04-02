@@ -9,6 +9,7 @@ import {
   MutationAddComment,
   MutationAddCommentVariables,
 } from "../codegen/MutationAddComment";
+import { PART_COMMENT } from "../fragments";
 
 import { ButtonInactivable } from "./ButtonInactivable";
 import { FWIcon } from "./FWIcon";
@@ -18,14 +19,17 @@ const GQL_ADD_COMMENT = gql`
     addComment(input: $input) {
       ok
       error
+      comment {
+        ...PartComment
+      }
     }
   }
+  ${PART_COMMENT}
 `;
 
 const WriteCommentContainer = styled.div`
   width: 100%;
   padding: 6px;
-  border-top: 1px solid ${(props) => props.theme.color.border};
 `;
 
 const FormComment = styled.form`
@@ -107,16 +111,20 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
           photoId,
         },
       },
-      refetchQueries: [
-        {
-          query: GQL_REFETCH_PHOTO,
-          variables: {
-            input: {
-              id: photoId,
+      update(cache, result) {
+        cache.modify({
+          id: `Photo:${photoId}`,
+          fields: {
+            comments(prev) {
+              const prevComments = prev ? prev.slice(0) : [];
+              return [result.data?.addComment.comment, ...prevComments];
+            },
+            numComments(prev) {
+              return prev + 1;
             },
           },
-        },
-      ],
+        });
+      },
     });
   };
 

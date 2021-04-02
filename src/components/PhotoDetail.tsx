@@ -12,7 +12,12 @@ import {
   SMALL_PART_COMMENT,
   SMALL_PART_PHOTO,
 } from "../fragments";
+import { makeLinkText, timeSince } from "../utils";
+import { Actions } from "./Actions";
+import { AvatarAndUsername } from "./Avatar";
+import { CommentItem } from "./CommentItem";
 import { LayoutContainer } from "./LayoutContainer";
+import { WriteComment } from "./WriteComment";
 
 const GQL_PHOTO_DETAIL = gql`
   query QueryPhotoDetail(
@@ -68,12 +73,14 @@ const XBox = styled.button`
 `;
 
 const InnerBox = styled(LayoutContainer)`
-  height: 70vh;
-  background-color: blue;
+  max-height: 70vh;
+  height: 100%;
+
   flex-direction: row;
   justify-content: flex-start;
   z-index: 20;
   position: relative;
+  background-color: ${(props) => props.theme.background.primary};
 `;
 
 const PhotoBox = styled.div<{ url: string }>`
@@ -85,13 +92,59 @@ const PhotoBox = styled.div<{ url: string }>`
   border: 1px solid ${(props) => props.theme.color.border};
 `;
 
+const ContentWrapper = styled.div`
+  max-width: 392px;
+  width: 100%;
+
+  max-height: 70vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid ${(props) => props.theme.color.border};
+  border-left: transparent;
+`;
+const ProfileBox = styled.div`
+  border-bottom: 1px solid ${(props) => props.theme.color.border};
+`;
 const ContentBox = styled.div`
   padding: 10px;
+  border-bottom: 1px solid ${(props) => props.theme.color.border};
+  min-height: 50vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 `;
-const ContentAndComment = styled.div``;
-const ActionBox = styled.div``;
-const CommentBox = styled.div``;
+const ActionBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10px;
+`;
+const CommentBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const SpanCaption = styled.span`
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+`;
+const SpanTimeSince = styled.span`
+  font-size: 13px;
+  font-weight: 300;
+  font-style: italic;
+  margin-left: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+`;
+const SpanNumLike = styled.span`
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 5px;
+`;
 
 export const PhotoDetail: React.FC<PhotoDetailProp> = ({
   photoId,
@@ -141,6 +194,54 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
                   url={data.seePhotoDetail.photo?.file!}
                   onClick={(e) => e.preventDefault()}
                 />
+                <ContentWrapper>
+                  <ProfileBox>
+                    <AvatarAndUsername
+                      url={data.seePhotoDetail.photo?.user.avatar}
+                      size="lg"
+                      username={data.seePhotoDetail.photo?.user.username!}
+                      firstName={data.seePhotoDetail.photo?.user.firstName}
+                      linkable
+                    />
+                  </ProfileBox>
+                  <ContentBox>
+                    <AvatarAndUsername
+                      url={data.seePhotoDetail.photo?.user.avatar}
+                      size="lg"
+                      username={data.seePhotoDetail.photo?.user.username!}
+                      firstName={data.seePhotoDetail.photo?.user.firstName}
+                      linkable
+                    />
+                    <SpanCaption>
+                      {makeLinkText(data.seePhotoDetail.photo?.caption!)}
+                    </SpanCaption>
+                    <SpanTimeSince>
+                      {timeSince(data.seePhotoDetail.photo?.createdAt)} ago
+                    </SpanTimeSince>
+                    {data.seePhotoDetail.photo?.comments.map((comment) => (
+                      <CommentItem
+                        key={comment.id}
+                        payload={comment.payload}
+                        commentId={comment.id}
+                        user={comment.user}
+                        isMine={comment.isMine}
+                        photoId={data.seePhotoDetail.photo?.id!}
+                      />
+                    ))}
+                  </ContentBox>
+                  <ActionBox>
+                    <Actions
+                      photoId={data.seePhotoDetail.photo?.id!}
+                      isLiked={data.seePhotoDetail.photo?.isLiked!}
+                    />
+                    <SpanNumLike>
+                      좋아요 {data.seePhotoDetail.photo?.numLikes}개
+                    </SpanNumLike>
+                  </ActionBox>
+                  <CommentBox>
+                    <WriteComment photoId={photoId} />
+                  </CommentBox>
+                </ContentWrapper>
               </InnerBox>
             </>
           )}

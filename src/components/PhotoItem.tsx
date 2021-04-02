@@ -4,16 +4,17 @@ import {
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { PartPhoto } from "../codegen/PartPhoto";
 import { breakpoints, device } from "../theme/theme";
 import { makeLinkText, timeSince } from "../utils";
-import { Avatar } from "./Avatar";
+import { Avatar, AvatarAndUsername } from "./Avatar";
 import { Collapse } from "./Collapse";
 import { CommentItem } from "./CommentItem";
 import { LikeButton } from "./LikeButton";
 import { WriteComment } from "./WriteComment";
 import { PhotoDetail } from "./PhotoDetail";
+import { Actions } from "./Actions";
 
 interface PhotoItemProps {
   photo: PartPhoto;
@@ -29,31 +30,6 @@ const PhotoItemWrapper = styled.div`
   min-height: 60px;
 `;
 
-const PhotoItemHeader = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 60px;
-  padding: 16px;
-`;
-
-const PhotoItemHeaderUserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-`;
-
-const PhotoItemHeaderUsername = styled.span`
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 3px;
-`;
-
-const PhotoItemHeaderName = styled.span`
-  font-size: 14px;
-`;
-
 const Photo = styled.div<{ url: string }>`
   ${device.sm} {
     min-height: ${breakpoints.sm};
@@ -61,7 +37,7 @@ const Photo = styled.div<{ url: string }>`
   ${device.xs} {
     min-height: ${breakpoints.xs};
   }
-  cursor: pointer;
+
   width: 100%;
   background-position: center center;
   background-size: cover;
@@ -73,21 +49,6 @@ const PhotoContentContainer = styled.div`
   padding: 5px 16px;
   display: flex;
   flex-direction: column;
-`;
-
-const PhotoMenuContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const PhotoMenuItem = styled(FontAwesomeIcon)`
-  &:not(:last-child) {
-    margin-right: 1rem;
-  }
-  padding: 5px;
 `;
 
 const SpanNumLike = styled.span`
@@ -114,35 +75,31 @@ const SpanTimeSince = styled.span`
 
 export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
   const [canSee, setCanSee] = useState(false);
+  const theme = useTheme();
   return (
     <>
       <PhotoDetail photoId={photo.id} canSee={canSee} setCanSee={setCanSee} />
       <PhotoItemWrapper>
-        <PhotoItemHeader>
-          <Avatar url={photo.user.avatar} size="lg" />
-          <PhotoItemHeaderUserInfo>
-            <PhotoItemHeaderUsername>
-              {photo.user.username}
-            </PhotoItemHeaderUsername>
-            <PhotoItemHeaderName>{photo.user.firstName}</PhotoItemHeaderName>
-          </PhotoItemHeaderUserInfo>
-        </PhotoItemHeader>
-        <Photo url={photo.file} onClick={() => setCanSee(true)} />
+        <AvatarAndUsername
+          url={photo.user.avatar}
+          size="lg"
+          username={photo.user.username}
+          firstName={photo.user.firstName}
+          linkable
+        />
+
+        <Photo url={photo.file} />
         <PhotoContentContainer>
-          <PhotoMenuContainer>
-            <LikeButton photoId={photo.id} isLike={photo.isLiked} />
-            <PhotoMenuItem icon={farPaperPlane} size="2x" />
-            <PhotoMenuItem icon={farComment} size="2x" />
-          </PhotoMenuContainer>
+          <Actions photoId={photo.id} isLiked={photo.isLiked} />
           <SpanNumLike>좋아요 {photo.numLikes}개</SpanNumLike>
           <span style={{ fontWeight: "bold" }}>{photo.user.username}</span>
           <Collapse collapsed={true} text={"...더보기"}>
             <span>{makeLinkText(photo.caption!)}</span>
           </Collapse>
-          <ButtonSeeMoreComment>
+          <ButtonSeeMoreComment onClick={() => setCanSee(true)}>
             댓글 {photo.numComments}개 더 보기
           </ButtonSeeMoreComment>
-          {photo.comments.map((comment) => (
+          {photo.comments.slice(0, 2).map((comment) => (
             <CommentItem
               key={comment.id}
               payload={comment.payload}
@@ -154,6 +111,13 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
           ))}
           <SpanTimeSince>{timeSince(photo.createdAt)} ago</SpanTimeSince>
         </PhotoContentContainer>
+        <div
+          style={{
+            height: 1,
+            width: "100%",
+            backgroundColor: theme.color.border,
+          }}
+        />
         <WriteComment photoId={photo.id} />
       </PhotoItemWrapper>
     </>
