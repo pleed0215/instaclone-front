@@ -3,7 +3,7 @@ import {
   faComment as farComment,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { PartPhoto } from "../codegen/PartPhoto";
 import { breakpoints, device } from "../theme/theme";
@@ -13,6 +13,7 @@ import { Collapse } from "./Collapse";
 import { CommentItem } from "./CommentItem";
 import { LikeButton } from "./LikeButton";
 import { WriteComment } from "./WriteComment";
+import { PhotoDetail } from "./PhotoDetail";
 
 interface PhotoItemProps {
   photo: PartPhoto;
@@ -60,7 +61,7 @@ const Photo = styled.div<{ url: string }>`
   ${device.xs} {
     min-height: ${breakpoints.xs};
   }
-
+  cursor: pointer;
   width: 100%;
   background-position: center center;
   background-size: cover;
@@ -112,45 +113,49 @@ const SpanTimeSince = styled.span`
 `;
 
 export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
+  const [canSee, setCanSee] = useState(false);
   return (
-    <PhotoItemWrapper>
-      <PhotoItemHeader>
-        <Avatar url={photo.user.avatar} size="lg" />
-        <PhotoItemHeaderUserInfo>
-          <PhotoItemHeaderUsername>
-            {photo.user.username}
-          </PhotoItemHeaderUsername>
-          <PhotoItemHeaderName>{photo.user.firstName}</PhotoItemHeaderName>
-        </PhotoItemHeaderUserInfo>
-      </PhotoItemHeader>
-      <Photo url={photo.file} />
-      <PhotoContentContainer>
-        <PhotoMenuContainer>
-          <LikeButton photoId={photo.id} isLike={photo.isLiked} />
-          <PhotoMenuItem icon={farPaperPlane} size="2x" />
-          <PhotoMenuItem icon={farComment} size="2x" />
-        </PhotoMenuContainer>
-        <SpanNumLike>좋아요 {photo.numLikes}개</SpanNumLike>
-        <span style={{ fontWeight: "bold" }}>{photo.user.username}</span>
-        <Collapse collapsed={true} text={"...더보기"}>
-          <span>{makeLinkText(photo.caption!)}</span>
-        </Collapse>
-        <ButtonSeeMoreComment>
-          댓글 {photo.numComments}개 더 보기
-        </ButtonSeeMoreComment>
-        {photo.comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            payload={comment.payload}
-            commentId={comment.id}
-            user={comment.user}
-            isMine={comment.isMine}
-            photoId={photo.id}
-          />
-        ))}
-        <SpanTimeSince>{timeSince(photo.createdAt)} ago</SpanTimeSince>
-      </PhotoContentContainer>
-      <WriteComment photoId={photo.id} />
-    </PhotoItemWrapper>
+    <>
+      <PhotoDetail photoId={photo.id} canSee={canSee} setCanSee={setCanSee} />
+      <PhotoItemWrapper>
+        <PhotoItemHeader>
+          <Avatar url={photo.user.avatar} size="lg" />
+          <PhotoItemHeaderUserInfo>
+            <PhotoItemHeaderUsername>
+              {photo.user.username}
+            </PhotoItemHeaderUsername>
+            <PhotoItemHeaderName>{photo.user.firstName}</PhotoItemHeaderName>
+          </PhotoItemHeaderUserInfo>
+        </PhotoItemHeader>
+        <Photo url={photo.file} onClick={() => setCanSee(true)} />
+        <PhotoContentContainer>
+          <PhotoMenuContainer>
+            <LikeButton photoId={photo.id} isLike={photo.isLiked} />
+            <PhotoMenuItem icon={farPaperPlane} size="2x" />
+            <PhotoMenuItem icon={farComment} size="2x" />
+          </PhotoMenuContainer>
+          <SpanNumLike>좋아요 {photo.numLikes}개</SpanNumLike>
+          <span style={{ fontWeight: "bold" }}>{photo.user.username}</span>
+          <Collapse collapsed={true} text={"...더보기"}>
+            <span>{makeLinkText(photo.caption!)}</span>
+          </Collapse>
+          <ButtonSeeMoreComment>
+            댓글 {photo.numComments}개 더 보기
+          </ButtonSeeMoreComment>
+          {photo.comments.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              payload={comment.payload}
+              commentId={comment.id}
+              user={comment.user}
+              isMine={comment.isMine}
+              photoId={photo.id}
+            />
+          ))}
+          <SpanTimeSince>{timeSince(photo.createdAt)} ago</SpanTimeSince>
+        </PhotoContentContainer>
+        <WriteComment photoId={photo.id} />
+      </PhotoItemWrapper>
+    </>
   );
 };

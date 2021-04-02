@@ -13,6 +13,7 @@ import { breakpoints, device } from "../theme/theme";
 
 import { PhotoItem } from "../components/PhotoItem";
 import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
+import { PhotoDetail } from "../components/PhotoDetail";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -81,6 +82,7 @@ const PhotoItemWrapper = styled.div`
   border: 1px solid ${(props) => props.theme.color.border};
   margin-bottom: 60px;
   min-height: 60px;
+  display: relative;
 `;
 
 export const HomePage = () => {
