@@ -51,7 +51,7 @@ const Container = styled(LayoutContainer)`
 const LogoContainer = styled.div`
   flex: 1 0 0%;
 `;
-const SearchContainer = styled.div`
+const SearchContainer = styled.form`
   ${device.xs} {
     display: none;
   }
@@ -229,13 +229,14 @@ export const Header: React.FC = () => {
             />
           </Link>
         </LogoContainer>
-        <SearchContainer>
+        <SearchContainer action="/search" method="GET">
           <IconSearch icon={faSearch} size="xs" />
           <SearchInput
             value={term}
             onChange={(e) => setTerm(e.target.value)}
             type="text"
             placeholder="검색"
+            name="term"
           />
           <IconReset
             icon={faTimesCircle}

@@ -1,5 +1,5 @@
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { apolloClient } from "./apollo/client";
 import { darkModeVar, isLoggedInVar } from "./apollo/vars";
@@ -26,6 +26,7 @@ const Container = styled.div`
 function App() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const isDarkMode = useReactiveVar(darkModeVar);
+
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>

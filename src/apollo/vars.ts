@@ -1,5 +1,6 @@
-import { makeVar } from "@apollo/client";
+import { makeVar, useApolloClient } from "@apollo/client";
 import { AUTH_TOKEN_NAME, DARK_NAME } from "../constants";
+import { apolloClient } from "./client";
 
 export const getTokenFromLS = () => localStorage.getItem(AUTH_TOKEN_NAME);
 export const setTokenToLS = (token: string) =>
@@ -12,10 +13,11 @@ export const makeLogin = (token: string) => {
   isLoggedInVar(true);
   authTokenVar(token);
 };
-export const makeLogout = () => {
+export const makeLogout = async () => {
   removeTokenFromLS();
   isLoggedInVar(false);
   authTokenVar(null);
+  await apolloClient.clearStore();
 };
 
 const isDarkFromLS = () => localStorage.getItem(DARK_NAME) || "false";
