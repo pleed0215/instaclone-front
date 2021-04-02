@@ -25,7 +25,7 @@ type AvatarSizeType = keyof typeof AvatarSize;
 interface AvatarProps {
   url: string | null | undefined;
   size: AvatarSizeType;
-  hoverMenu?: boolean;
+  outline?: boolean;
 }
 
 const AvatarContainer = styled.div<AvatarProps>`
@@ -42,6 +42,11 @@ const AvatarContainer = styled.div<AvatarProps>`
   background-position: center center;
   overflow: hidden;
   ${(props) =>
+    props.outline &&
+    css`
+      border: 1px solid ${(props) => props.theme.color.primary};
+    `};
+  ${(props) =>
     props.url &&
     css`
       background-image: url(${props.url});
@@ -51,10 +56,15 @@ const AvatarContainer = styled.div<AvatarProps>`
 export const Avatar: React.FC<AvatarProps> = ({
   url,
   size,
-  hoverMenu = false,
+  outline = false,
 }) => {
   return (
-    <AvatarContainer size={size} url={url} onMouseEnter={getMouseVertical}>
+    <AvatarContainer
+      size={size}
+      url={url}
+      onMouseEnter={getMouseVertical}
+      outline={outline}
+    >
       {!url && <FontAwesomeIcon icon={faUser} size={size} color="gray" />}
     </AvatarContainer>
   );

@@ -126,8 +126,11 @@ const SpanPhotoInfo = styled.span`
   color: white;
 `;
 
-const IconPhotoInfo = styled(FontAwesomeIcon)`
+const IconPhotoInfo = styled(FontAwesomeIcon)<{ color: string }>`
   margin-right: 5px;
+  &:svg {
+    color: ${(props) => props.color};
+  }
 `;
 
 export const UserPage = () => {
@@ -181,11 +184,11 @@ export const UserPage = () => {
             <PhotoFrame key={photo.id} file={photo.file}>
               <PhotoInfoContainer>
                 <SpanPhotoInfo>
-                  <IconPhotoInfo icon={faHeart} />
+                  <IconPhotoInfo icon={faHeart} color="white" />
                   {photo.numLikes}
                 </SpanPhotoInfo>
                 <SpanPhotoInfo>
-                  <IconPhotoInfo icon={faComment} />
+                  <IconPhotoInfo icon={faComment} color="white" />
                   {photo.numComments}
                 </SpanPhotoInfo>
               </PhotoInfoContainer>

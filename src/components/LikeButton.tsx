@@ -7,7 +7,7 @@ import {
   MutationToggleLike,
   MutationToggleLikeVariables,
 } from "../codegen/MutationToggleLike";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 const GQL_TOGGLE_LIKE = gql`
   mutation MutationToggleLike($input: ToggleLikeInput!) {
@@ -32,6 +32,7 @@ const SIcon = styled(FontAwesomeIcon)`
 export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
   const client = useApolloClient();
   const [like, setLike] = useState(isLike);
+  const theme = useTheme();
   const [toggleLike] = useMutation<
     MutationToggleLike,
     MutationToggleLikeVariables
@@ -60,6 +61,11 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
   };
 
   return (
-    <SIcon icon={like ? faHeart : farHeart} size="2x" onClick={onLikeClicked} />
+    <SIcon
+      icon={like ? faHeart : farHeart}
+      size="2x"
+      onClick={onLikeClicked}
+      color={like ? theme.color.like : theme.color.primary}
+    />
   );
 };

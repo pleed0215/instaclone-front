@@ -12,6 +12,7 @@ declare module "styled-components" {
       warning?: string;
       info?: string;
       success?: string;
+      like?: string;
     };
     background: {
       primary: string;

@@ -1,21 +1,25 @@
 import { useReactiveVar } from "@apollo/client";
 import {
-  faHome,
+  faImage,
+  faCompass,
   faMoon,
   faSearch,
   faSignOutAlt,
   faSun,
   faTimesCircle,
   faUserCircle,
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
+
 import {
+  faImage as farImage,
   faCompass as farCompass,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { darkModeVar, makeLogout, setDarkMode } from "../apollo/vars";
 import { useMe } from "../hooks/useMe";
 import { device } from "../theme/theme";
@@ -173,6 +177,8 @@ export const Header: React.FC = () => {
   const [term, setTerm] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
   const menu = useRef<HTMLDivElement>(null);
+
+  const [clickedMenu, setClickedMenu] = useState(0);
   const onDarkModeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setDarkMode(e.target.checked);
   };
@@ -187,6 +193,7 @@ export const Header: React.FC = () => {
     }
   };
   const seedMenuCloseTimer = () => {
+    setClickedMenu(0);
     if (menu.current) {
       menu.current.style.opacity = "0";
     }
@@ -208,6 +215,8 @@ export const Header: React.FC = () => {
       }
     };
   }, [hTimeout]);
+
+  const onMenuClicked = (index: number) => () => setClickedMenu(index);
 
   return (
     <HeaderContainer>
@@ -235,20 +244,33 @@ export const Header: React.FC = () => {
           />
         </SearchContainer>
         <MenuContainer>
-          <MenuLink to="/">
-            <IconMenu icon={faHome} size="lg" />
+          <MenuLink to="/" onClick={onMenuClicked(0)}>
+            <IconMenu icon={clickedMenu === 0 ? faImage : farImage} size="lg" />
           </MenuLink>
-          <MenuLink to="/direct/inbox">
-            <IconMenu icon={farPaperPlane} size="lg" />
+          <MenuLink to="/direct/inbox" onClick={onMenuClicked(1)}>
+            <IconMenu
+              icon={clickedMenu === 1 ? faPaperPlane : farPaperPlane}
+              size="lg"
+            />
           </MenuLink>
-          <MenuLink to="/activity">
-            <IconMenu icon={farCompass} size="lg" />
+          <MenuLink to="/activity" onClick={onMenuClicked(2)}>
+            <IconMenu
+              icon={clickedMenu === 2 ? faCompass : farCompass}
+              size="lg"
+            />
           </MenuLink>
           <AvatarWrapper
-            onClick={() => onToggleMenu()}
+            onClick={() => {
+              onMenuClicked(3)();
+              onToggleMenu();
+            }}
             onBlur={() => seedMenuCloseTimer()}
           >
-            <Avatar url={me?.seeMe.avatar} size="lg" />
+            <Avatar
+              url={me?.seeMe.avatar}
+              size="lg"
+              outline={clickedMenu === 3}
+            />
             {menuVisible && (
               <AvatarMenuWrapper visible={menuVisible} ref={menu}>
                 <Link to={`/users/${me?.seeMe.username}`}>

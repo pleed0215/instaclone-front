@@ -12,6 +12,7 @@ import {
 import { breakpoints, device } from "../theme/theme";
 
 import { PhotoItem } from "../components/PhotoItem";
+import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -97,6 +98,7 @@ export const HomePage = () => {
 
   return (
     <Container>
+      <HelmetOnlyTitle title={"Feed"} />
       {loadFeed && <Loader />}
       {!loadFeed && feeds?.seeFeeds.feeds && (
         <PhotoContainer>
