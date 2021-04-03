@@ -8,6 +8,7 @@ import {
   MutationRemoveComment,
   MutationRemoveCommentVariables,
 } from "../codegen/MutationRemoveComment";
+import { PartPhoto_comments } from "../codegen/PartPhoto";
 import { makeLinkText } from "../utils";
 
 const GQL_REMOVE_COMMENT = gql`
@@ -102,6 +103,12 @@ export const CommentItem: React.FC<CommentItemProps> = ({
           fields: {
             numComments(prev) {
               return prev - 1;
+            },
+            comments(prev: PartPhoto_comments[]) {
+              const safePrev = prev ? prev.slice(0) : [];
+              return safePrev.filter(
+                (comment: PartPhoto_comments) => comment.id !== commentId
+              );
             },
           },
         });

@@ -110,7 +110,8 @@ const ProfileBox = styled.div`
 const ContentBox = styled.div`
   padding: 10px;
   border-bottom: 1px solid ${(props) => props.theme.color.border};
-  min-height: 50vh;
+  height: 100%;
+  max-height: 46vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

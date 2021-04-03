@@ -31,7 +31,7 @@ const SIcon = styled(FontAwesomeIcon)`
 
 export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
   const client = useApolloClient();
-  const [like, setLike] = useState(isLike);
+
   const theme = useTheme();
   const [toggleLike] = useMutation<
     MutationToggleLike,
@@ -42,7 +42,10 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
         id: `Photo:${photoId}`,
         fields: {
           numLikes(prev) {
-            return like ? prev + 1 : prev - 1;
+            return isLike ? prev - 1 : prev + 1;
+          },
+          isLiked(prev) {
+            return !prev;
           },
         },
       });
@@ -57,15 +60,14 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ photoId, isLike }) => {
         },
       },
     });
-    setLike(!like);
   };
 
   return (
     <SIcon
-      icon={like ? faHeart : farHeart}
+      icon={isLike ? faHeart : farHeart}
       size="2x"
       onClick={onLikeClicked}
-      color={like ? theme.color.like : theme.color.primary}
+      color={isLike ? theme.color.like : theme.color.primary}
     />
   );
 };

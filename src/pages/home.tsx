@@ -13,21 +13,11 @@ import { breakpoints, device } from "../theme/theme";
 
 import { PhotoItem } from "../components/PhotoItem";
 import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
-import { PhotoDetail } from "../components/PhotoDetail";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
     seeFeeds(input: $input) {
-      ok
-      error
-      totalCount
-      totalPage
-      currentCount
-      currentPage
-      pageSize
-      feeds {
-        ...PartPhoto
-      }
+      ...PartPhoto
     }
   }
   ${PART_PHOTO}
@@ -92,8 +82,8 @@ export const HomePage = () => {
   >(GQL_FEED, {
     variables: {
       input: {
-        page: 1,
-        pageSize: 10,
+        offset: 0,
+        limit: 10,
       },
     },
   });
@@ -102,10 +92,10 @@ export const HomePage = () => {
     <Container>
       <HelmetOnlyTitle title={"Feed"} />
       {loadFeed && <Loader />}
-      {!loadFeed && feeds?.seeFeeds.feeds && (
+      {!loadFeed && feeds?.seeFeeds && (
         <PhotoContainer>
           <PhotoItemWrapper />
-          {feeds.seeFeeds.feeds.map((feed) => (
+          {feeds.seeFeeds.map((feed) => (
             <PhotoItem key={feed.id} photo={feed} />
           ))}
         </PhotoContainer>

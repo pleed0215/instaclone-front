@@ -9,6 +9,7 @@ import {
   MutationAddComment,
   MutationAddCommentVariables,
 } from "../codegen/MutationAddComment";
+import { PartPhoto_comments } from "../codegen/PartPhoto";
 import { PART_COMMENT } from "../fragments";
 
 import { ButtonInactivable } from "./ButtonInactivable";
@@ -115,7 +116,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
         cache.modify({
           id: `Photo:${photoId}`,
           fields: {
-            comments(prev) {
+            comments(prev: PartPhoto_comments[]) {
               const prevComments = prev ? prev.slice(0) : [];
               return [result.data?.addComment.comment, ...prevComments];
             },
