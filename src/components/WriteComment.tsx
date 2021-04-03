@@ -74,6 +74,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
     handleSubmit,
     formState,
     getValues,
+    control,
     setValue,
   } = useForm<CommentForm>({ mode: "onChange" });
   const [addComment] = useMutation<
@@ -85,10 +86,11 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
       setValue("payload", "");
     },
   });
-
   const [loading, setLoading] = useState(false);
   const emojiButton = useRef<HTMLButtonElement>(null);
   const picker = new EmojiButton();
+  const ref = register({ required: true, minLength: 1 });
+
   picker.on("emoji", (selection) => {
     setValue("payload", getValues("payload") + selection.emoji, {
       shouldValidate: true,
@@ -135,11 +137,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
         <ButtonEmoji ref={emojiButton} onClick={onEmojiButtonClicked}>
           <FWIcon icon={faKissBeam} size="2x" />
         </ButtonEmoji>
-        <TextareaComment
-          ref={register({ required: true, minLength: 1 })}
-          name="payload"
-          placeholder="댓글 달기..."
-        />
+        <TextareaComment ref={ref} name="payload" placeholder="댓글 달기..." />
         <SubmitButton
           isActivate={!loading && formState.isValid}
           loading={loading}

@@ -13,6 +13,8 @@ import { breakpoints, device } from "../theme/theme";
 
 import { PhotoItem } from "../components/PhotoItem";
 import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
+import { AvatarAndUsername } from "../components/Avatar";
+import { useMe } from "../hooks/useMe";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -87,6 +89,7 @@ export const HomePage = () => {
       },
     },
   });
+  const { data: me } = useMe();
 
   return (
     <Container>
@@ -103,7 +106,15 @@ export const HomePage = () => {
 
       <MeAndSomeuserContainer>
         <MeAndSomeUsers>
-          <span>Hello</span>
+          {me && (
+            <AvatarAndUsername
+              url={me?.seeMe.avatar}
+              username={me?.seeMe.username}
+              firstName={me?.seeMe.firstName}
+              linkable
+              size="3x"
+            />
+          )}
         </MeAndSomeUsers>
       </MeAndSomeuserContainer>
     </Container>
