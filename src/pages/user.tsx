@@ -5,6 +5,10 @@ import React, { useRef, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import {
+  MutationUpdateAvatar,
+  MutationUpdateAvatarVariables,
+} from "../codegen/MutationUpdateAvatar";
+import {
   QuerySeeProfile,
   QuerySeeProfileVariables,
 } from "../codegen/QuerySeeProfile";
@@ -29,8 +33,8 @@ const GQL_USER = gql`
 `;
 
 const GQL_UPDATE_AVATAR = gql`
-  mutation MutationUpdateAvatar($file: Upload!) {
-    updateProfile(input: { avatar: $file }) {
+  mutation MutationUpdateAvatar($file: Upload!, $id: Int!) {
+    updateProfile(input: { id: $id, avatar: $file }) {
       ok
       error
     }
@@ -178,7 +182,10 @@ export const UserPage = () => {
   const fileInput = useRef<HTMLInputElement>(null);
 
   const { data: me, loading: meLoading } = useMe();
-  const [updateAvatar] = useMutation(GQL_UPDATE_AVATAR);
+  const [updateAvatar] = useMutation<
+    MutationUpdateAvatar,
+    MutationUpdateAvatarVariables
+  >(GQL_UPDATE_AVATAR);
   const { data, loading } = useQuery<QuerySeeProfile, QuerySeeProfileVariables>(
     GQL_USER,
     {
@@ -207,9 +214,9 @@ export const UserPage = () => {
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
+    if (me && files && files.length > 0) {
       const file = files[0];
-      console.log(file);
+
       updateAvatar({
         variables: {
           id: me?.seeMe.id,
@@ -234,7 +241,7 @@ export const UserPage = () => {
       <Container>
         <ProfileContainer>
           <AvatarContainer onClick={onAvatarMenuClick} onBlur={onBlurAvatar}>
-            <Avatar size="10x" url={user.avatar} />
+            <Avatar size="10x" url={user?.avatar} />
           </AvatarContainer>
           {seeMenu && (
             <AvatarMenu ref={avatarMenu} onClick={onAvatarChangeClick}>
@@ -250,11 +257,11 @@ export const UserPage = () => {
           )}
           <UserContentContainer>
             <UsernameContainer>
-              <SpanUsername>{user.username}</SpanUsername>
-              {user.id === me?.seeMe.id && (
+              <SpanUsername>{user?.username}</SpanUsername>
+              {user?.id === me?.seeMe.id && (
                 <ButtonEditProfile>프로필 편집</ButtonEditProfile>
               )}
-              {user.id !== me?.seeMe.id && (
+              {user?.id !== me?.seeMe.id && (
                 <ToggleFollow
                   isFollowing={user.isFollowing}
                   authUsername={me?.seeMe.username!}
@@ -263,15 +270,15 @@ export const UserPage = () => {
               )}
             </UsernameContainer>
             <NumberContainer>
-              <SpanNumber>게시물 {user.numPhotos}</SpanNumber>
-              <SpanNumber>팔로워 {user.totalFollowers}</SpanNumber>
-              <SpanNumber>팔로우 {user.totalFollowings}</SpanNumber>
+              <SpanNumber>게시물 {user?.numPhotos}</SpanNumber>
+              <SpanNumber>팔로워 {user?.totalFollowers}</SpanNumber>
+              <SpanNumber>팔로우 {user?.totalFollowings}</SpanNumber>
             </NumberContainer>
-            <SpanName>{user.firstName}</SpanName>
+            <SpanName>{user?.firstName}</SpanName>
           </UserContentContainer>
         </ProfileContainer>
         <PhotoContainer>
-          {user.photos.map((photo) => (
+          {user?.photos.map((photo) => (
             <PhotoFrame key={photo.id} file={photo.file}>
               <PhotoDetail
                 photoId={photoId}

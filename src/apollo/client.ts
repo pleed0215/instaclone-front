@@ -14,6 +14,7 @@ const WS_ENDPOINT = `wss://forkstar.herokuapp.com/graphql`;
 
 //const httpLink = createHttpLink({ uri: HTTP_ENDPOINT });
 const uploadLink = createUploadLink({ uri: HTTP_ENDPOINT });
+
 const wsLink = new WebSocketLink({
   uri: WS_ENDPOINT,
   options: {

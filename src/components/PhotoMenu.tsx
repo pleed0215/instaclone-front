@@ -13,7 +13,7 @@ interface PhotoMenuProp {
 
 const GQL_REMOVE_PHOTO = gql`
   mutation MutationRemovePhoto($input: DeletePhotoInput!) {
-    deletePhoto(input: $input) {
+    removePhoto(input: $input) {
       ok
       error
     }
