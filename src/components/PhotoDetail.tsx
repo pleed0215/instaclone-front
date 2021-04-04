@@ -1,17 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
-import { faCross, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
-import styled, { useTheme } from "styled-components";
+import React, { MouseEvent, useEffect, useRef } from "react";
+import styled from "styled-components";
 import {
   QueryPhotoDetail,
   QueryPhotoDetailVariables,
 } from "../codegen/QueryPhotoDetail";
-import {
-  PART_COMMENT,
-  SMALL_PART_COMMENT,
-  SMALL_PART_PHOTO,
-} from "../fragments";
+import { PART_COMMENT, SMALL_PART_PHOTO } from "../fragments";
 import { makeLinkText, timeSince } from "../utils";
 import { Actions } from "./Actions";
 import { AvatarAndUsername } from "./Avatar";
@@ -169,7 +165,6 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
       limit: 10,
     },
   });
-  const theme = useTheme();
 
   useEffect(() => {
     setCanSee(canSee);
@@ -185,11 +180,7 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
             <>
               <InnerBox>
                 <XBox onClick={() => setCanSee(!canSee)}>
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    size="lg"
-                    color={theme.color.primary}
-                  />
+                  <FontAwesomeIcon icon={faTimes} size="lg" color="white" />
                 </XBox>
                 <PhotoBox
                   url={data.seePhotoDetail.photo?.file!}

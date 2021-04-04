@@ -1,5 +1,5 @@
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import React, { useEffect } from "react";
+import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { apolloClient } from "./apollo/client";
 import { darkModeVar, isLoggedInVar } from "./apollo/vars";

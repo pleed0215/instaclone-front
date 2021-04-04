@@ -18,8 +18,8 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import styled, { useTheme } from "styled-components";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
 import { darkModeVar, makeLogout, setDarkMode } from "../apollo/vars";
 import { useMe } from "../hooks/useMe";
 import { device } from "../theme/theme";
@@ -217,6 +217,7 @@ export const Header: React.FC = () => {
   }, [hTimeout]);
 
   const onMenuClicked = (index: number) => () => setClickedMenu(index);
+  const history = useHistory();
 
   return (
     <HeaderContainer>
@@ -281,7 +282,12 @@ export const Header: React.FC = () => {
                   </AvatarMenuItem>
                 </Link>
                 <AvatarMenuSeperator />
-                <AvatarMenuItem onClick={() => makeLogout()}>
+                <AvatarMenuItem
+                  onClick={() => {
+                    history.push("/");
+                    makeLogout();
+                  }}
+                >
                   <AvatarMenuItemIcon icon={faSignOutAlt} size="lg" />
                   <SpanAvatarMenuItem>로그아웃</SpanAvatarMenuItem>
                 </AvatarMenuItem>

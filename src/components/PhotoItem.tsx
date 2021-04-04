@@ -1,20 +1,19 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faComment as farComment,
-  faPaperPlane as farPaperPlane,
-} from "@fortawesome/free-regular-svg-icons";
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { PartPhoto } from "../codegen/PartPhoto";
 import { breakpoints, device } from "../theme/theme";
 import { makeLinkText, timeSince } from "../utils";
-import { Avatar, AvatarAndUsername } from "./Avatar";
+
 import { Collapse } from "./Collapse";
 import { CommentItem } from "./CommentItem";
-import { LikeButton } from "./LikeButton";
+
 import { WriteComment } from "./WriteComment";
 import { PhotoDetail } from "./PhotoDetail";
+import { PhotoMenu } from "./PhotoMenu";
 import { Actions } from "./Actions";
+import { AvatarAndUsername } from "./Avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 
 interface PhotoItemProps {
   photo: PartPhoto;
@@ -75,19 +74,33 @@ const SpanTimeSince = styled.span`
 
 export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
   const [canSee, setCanSee] = useState(false);
+  const [menuSee, setMenuSee] = useState(false);
   const theme = useTheme();
   return (
     <>
       <PhotoDetail photoId={photo.id} canSee={canSee} setCanSee={setCanSee} />
+      <PhotoMenu
+        photoId={photo.id}
+        canSee={menuSee}
+        setCanSee={setMenuSee}
+        isOwner={photo.isMine}
+      />
       <PhotoItemWrapper>
-        <AvatarAndUsername
-          url={photo.user.avatar}
-          size="lg"
-          username={photo.user.username}
-          firstName={photo.user.firstName}
-          linkable
-        />
-
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <AvatarAndUsername
+            url={photo.user.avatar}
+            size="lg"
+            username={photo.user.username}
+            firstName={photo.user.firstName}
+            linkable
+          />
+          <button
+            onClick={() => setMenuSee(!menuSee)}
+            style={{ marginRight: 10 }}
+          >
+            <FontAwesomeIcon icon={faEllipsisH} color={theme.color.primary} />
+          </button>
+        </div>
         <Photo url={photo.file} />
         <PhotoContentContainer>
           <Actions photoId={photo.id} isLiked={photo.isLiked} />

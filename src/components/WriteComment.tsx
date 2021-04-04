@@ -4,7 +4,7 @@ import { EmojiButton } from "@joeattardi/emoji-button";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { GQL_REFETCH_PHOTO } from "../apollo/refetch";
+
 import {
   MutationAddComment,
   MutationAddCommentVariables,
@@ -74,7 +74,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
     handleSubmit,
     formState,
     getValues,
-    control,
+
     setValue,
   } = useForm<CommentForm>({ mode: "onChange" });
   const [addComment] = useMutation<

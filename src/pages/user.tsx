@@ -1,7 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import {
@@ -11,8 +11,9 @@ import {
 import { Avatar } from "../components/Avatar";
 import { ToggleFollow } from "../components/FollowButton";
 import { LayoutContainer } from "../components/LayoutContainer";
+import { PhotoDetail } from "../components/PhotoDetail";
 import { PART_USER } from "../fragments";
-import { useMe } from "../hooks/useMe";
+import { GQL_ME, useMe } from "../hooks/useMe";
 
 const GQL_USER = gql`
   query QuerySeeProfile($input: SeeProfileInput!) {
@@ -27,6 +28,15 @@ const GQL_USER = gql`
   ${PART_USER}
 `;
 
+const GQL_UPDATE_AVATAR = gql`
+  mutation MutationUpdateAvatar($file: Upload!) {
+    updateProfile(input: { avatar: $file }) {
+      ok
+      error
+    }
+  }
+`;
+
 const Container = styled(LayoutContainer)`
   flex-direction: column;
   align-items: center;
@@ -37,11 +47,13 @@ const ProfileContainer = styled.div`
   align-items: start;
   justify-content: start;
   width: 100%;
+  position: relative;
 `;
 
-const AvatarContainer = styled.div`
+const AvatarContainer = styled.button`
   margin-left: 5rem;
   margin-right: 5rem;
+  position: relative;
 `;
 
 const UserContentContainer = styled.div`
@@ -91,7 +103,7 @@ const PhotoContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 5px;
 `;
-const PhotoInfoContainer = styled.div`
+const PhotoInfoContainer = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,6 +130,29 @@ const PhotoFrame = styled.div<{ file: string }>`
   }
 `;
 
+const AvatarMenu = styled.button`
+  background-color: rgb(230, 230, 230);
+  color: blue;
+  text-align: center;
+  position: absolute;
+  bottom: -45px;
+  width: 200px;
+  left: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  &:before {
+    content: "";
+    height: 5px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgb(230, 230, 230);
+    border-top: 5px solid none;
+    position: absolute;
+    top: -10px;
+    left: 40px;
+  }
+`;
+
 const SpanPhotoInfo = styled.span`
   font-weight: 600;
   &:first-child {
@@ -134,8 +169,16 @@ const IconPhotoInfo = styled(FontAwesomeIcon)<{ color: string }>`
 `;
 
 export const UserPage = () => {
+  const [canSee, setCanSee] = useState(false);
+  const [seeMenu, setSeeMenu] = useState(false);
+  const [photoId, setPhotoId] = useState(0);
   const { username } = useParams<{ username: string }>();
+  const avatarMenu = useRef<HTMLButtonElement>(null);
+  const [file, setFile] = useState();
+  const fileInput = useRef<HTMLInputElement>(null);
+
   const { data: me, loading: meLoading } = useMe();
+  const [updateAvatar] = useMutation(GQL_UPDATE_AVATAR);
   const { data, loading } = useQuery<QuerySeeProfile, QuerySeeProfileVariables>(
     GQL_USER,
     {
@@ -146,6 +189,42 @@ export const UserPage = () => {
       },
     }
   );
+  const onPhotoClick = (id: number) => () => {
+    setPhotoId(id);
+    setCanSee(true);
+  };
+  const onAvatarMenuClick = () => {
+    setSeeMenu(!seeMenu);
+  };
+  const onBlurAvatar = (e: React.FocusEvent<HTMLButtonElement>) => {
+    if (e.relatedTarget !== avatarMenu.current) {
+      setSeeMenu(false);
+    }
+  };
+  const onAvatarChangeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (fileInput.current) fileInput.current.click();
+  };
+
+  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      console.log(file);
+      updateAvatar({
+        variables: {
+          id: me?.seeMe.id,
+          file,
+        },
+        refetchQueries: [
+          {
+            query: GQL_ME,
+          },
+        ],
+      });
+    }
+    setSeeMenu(false);
+  };
+
   if (loading || meLoading) {
     return <div>loading...</div>;
   } else {
@@ -154,9 +233,22 @@ export const UserPage = () => {
     return (
       <Container>
         <ProfileContainer>
-          <AvatarContainer>
+          <AvatarContainer onClick={onAvatarMenuClick} onBlur={onBlurAvatar}>
             <Avatar size="10x" url={user.avatar} />
           </AvatarContainer>
+          {seeMenu && (
+            <AvatarMenu ref={avatarMenu} onClick={onAvatarChangeClick}>
+              아바타 변경
+              <input
+                type="file"
+                accept="image/jpeg"
+                ref={fileInput}
+                style={{ display: "none" }}
+                value={file}
+                onChange={onFileSelect}
+              />
+            </AvatarMenu>
+          )}
           <UserContentContainer>
             <UsernameContainer>
               <SpanUsername>{user.username}</SpanUsername>
@@ -182,7 +274,12 @@ export const UserPage = () => {
         <PhotoContainer>
           {user.photos.map((photo) => (
             <PhotoFrame key={photo.id} file={photo.file}>
-              <PhotoInfoContainer>
+              <PhotoDetail
+                photoId={photoId}
+                canSee={canSee}
+                setCanSee={setCanSee}
+              />
+              <PhotoInfoContainer onClick={onPhotoClick(photo.id)}>
                 <SpanPhotoInfo>
                   <IconPhotoInfo icon={faHeart} color="white" />
                   {photo.numLikes}

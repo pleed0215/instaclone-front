@@ -15,6 +15,7 @@ import { PhotoItem } from "../components/PhotoItem";
 import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 import { AvatarAndUsername } from "../components/Avatar";
 import { useMe } from "../hooks/useMe";
+import { Footer } from "../components/Footer";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -94,7 +95,19 @@ export const HomePage = () => {
   return (
     <Container>
       <HelmetOnlyTitle title={"Feed"} />
-      {loadFeed && <Loader />}
+      {loadFeed && (
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Loader />
+        </div>
+      )}
       {!loadFeed && feeds?.seeFeeds && (
         <PhotoContainer>
           <PhotoItemWrapper />
@@ -115,6 +128,7 @@ export const HomePage = () => {
               size="3x"
             />
           )}
+          <Footer />
         </MeAndSomeUsers>
       </MeAndSomeuserContainer>
     </Container>

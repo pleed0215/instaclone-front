@@ -18,7 +18,7 @@ const Layout = styled(LayoutContainer)`
 `;
 
 const SpanCopyright = styled.span`
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   color: ${(props) => props.theme.color.primary};
 `;
@@ -27,7 +27,7 @@ export const Footer = () => (
   <Container>
     <Layout>
       <SpanCopyright>
-        &copy;Actually no copyrights. instagram clone from Nomadcoders.co
+        &copy; From nomadcoders instagram cloning course
       </SpanCopyright>
     </Layout>
   </Container>

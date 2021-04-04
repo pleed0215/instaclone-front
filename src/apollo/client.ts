@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  split,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, split } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";

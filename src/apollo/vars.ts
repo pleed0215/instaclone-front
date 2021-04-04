@@ -1,4 +1,4 @@
-import { makeVar, useApolloClient } from "@apollo/client";
+import { makeVar } from "@apollo/client";
 import { AUTH_TOKEN_NAME, DARK_NAME } from "../constants";
 import { apolloClient } from "./client";
 
