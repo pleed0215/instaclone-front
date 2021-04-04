@@ -168,7 +168,7 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
 
   useEffect(() => {
     setCanSee(canSee);
-  }, []);
+  }, [canSee, setCanSee]);
 
   if (!canSee) return <></>;
 

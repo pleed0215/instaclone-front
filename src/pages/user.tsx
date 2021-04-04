@@ -174,7 +174,7 @@ export const UserPage = () => {
   const [photoId, setPhotoId] = useState(0);
   const { username } = useParams<{ username: string }>();
   const avatarMenu = useRef<HTMLButtonElement>(null);
-  const [file, setFile] = useState();
+
   const fileInput = useRef<HTMLInputElement>(null);
 
   const { data: me, loading: meLoading } = useMe();
@@ -244,7 +244,6 @@ export const UserPage = () => {
                 accept="image/jpeg"
                 ref={fileInput}
                 style={{ display: "none" }}
-                value={file}
                 onChange={onFileSelect}
               />
             </AvatarMenu>
