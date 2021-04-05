@@ -79,3 +79,36 @@ export const PART_USER = gql`
   }
   ${SMALL_PART_PHOTO}
 `;
+
+export const PART_MESSAGE = gql`
+  fragment PartMessage on Message {
+    id
+    isRead
+    createdAt
+    payload
+    user {
+      id
+      username
+      avatar
+    }
+  }
+`;
+
+export const PART_ROOM = gql`
+  fragment PartRoom on Room {
+    id
+    createdAt
+    updatedAt
+    participants {
+      id
+      username
+      avatar
+      firstName
+    }
+    numUnread
+    latestMessage {
+      ...PartMessage
+    }
+  }
+  ${PART_MESSAGE}
+`;

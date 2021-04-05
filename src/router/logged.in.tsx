@@ -7,6 +7,7 @@ import { ProfileEditPage } from "../pages/edit.profile";
 import { HomePage } from "../pages/home";
 import { SearchPage } from "../pages/search";
 import { UserPage } from "../pages/user";
+import { DMRooms } from "../pages/dm.rooms";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -36,6 +37,9 @@ export const LoggedInRouter = () => {
           </Route>
           <Route path="/users/:username" exact>
             <UserPage />
+          </Route>
+          <Route path="/direct/:username" exact>
+            <DMRooms />
           </Route>
           <Route>
             <NotFoundPage />
