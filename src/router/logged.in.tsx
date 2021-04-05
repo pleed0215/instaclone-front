@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Header } from "../components/Header";
 import { NotFoundPage } from "../pages/404";
+import { ProfileEditPage } from "../pages/edit.profile";
 import { HomePage } from "../pages/home";
 import { SearchPage } from "../pages/search";
 import { UserPage } from "../pages/user";
@@ -26,6 +27,9 @@ export const LoggedInRouter = () => {
         <Switch>
           <Route path="/" exact>
             <HomePage />
+          </Route>
+          <Route path="/edit-me" exact>
+            <ProfileEditPage />
           </Route>
           <Route path="/search" exact>
             <SearchPage />

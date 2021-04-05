@@ -3,6 +3,7 @@ import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   MutationUpdateAvatar,
@@ -78,7 +79,7 @@ const SpanUsername = styled.span`
   vertical-align: text-bottom;
 `;
 
-const ButtonEditProfile = styled.button`
+const ButtonEditProfile = styled(Link)`
   border: 1px solid ${(props) => props.theme.color.border};
   padding: 5px 8px;
   border-radius: 5px;
@@ -259,7 +260,7 @@ export const UserPage = () => {
             <UsernameContainer>
               <SpanUsername>{user?.username}</SpanUsername>
               {user?.id === me?.seeMe.id && (
-                <ButtonEditProfile>프로필 편집</ButtonEditProfile>
+                <ButtonEditProfile to="/edit-me">프로필 편집</ButtonEditProfile>
               )}
               {user?.id !== me?.seeMe.id && (
                 <ToggleFollow
