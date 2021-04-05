@@ -38,6 +38,9 @@ export const LoggedInRouter = () => {
           <Route path="/users/:username" exact>
             <UserPage />
           </Route>
+          <Route path="/direct" exact>
+            <DMRooms />
+          </Route>
           <Route path="/direct/:username" exact>
             <DMRooms />
           </Route>

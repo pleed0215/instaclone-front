@@ -37,7 +37,7 @@ const HeaderContainer = styled.div`
   transition: background-color 0.4s;
   position: fixed;
   top: 0;
-  z-index: 999;
+  z-index: 8;
 `;
 
 const Container = styled(LayoutContainer)`
@@ -129,7 +129,7 @@ const AvatarMenuWrapper = styled.div<{ visible: boolean }>`
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
-  z-index: 9;
+  z-index: 8;
   display: flex;
   opacity: ${(props) => (props.visible ? "1" : "0")};
   transition: opacity 0.4s;

@@ -137,6 +137,12 @@ const UserItemBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: background-color 0.3s ease-in-out;
+  padding: 0px 10px;
+  border-radius: 8px;
+  &:hover {
+    background-color: rgba(200, 200, 200, 0.7);
+  }
 `;
 
 const UserItem: React.FC<UserItemProp> = ({ user, me }) => {

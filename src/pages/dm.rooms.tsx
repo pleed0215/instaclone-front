@@ -108,6 +108,11 @@ const RoomContainer = styled.div<{ selected: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &:hover {
+    background-color: ${(props) => props.theme.background.primary};
+  }
+  transition: background-color 0.3s ease-in;
+  cursor: pointer;
 `;
 
 const SpanUnread = styled.span`
@@ -117,12 +122,17 @@ const SpanUnread = styled.span`
 const RenderRoom: React.FC<{
   room: QuerySeeRooms_seeRooms_rooms;
   me: QuerySeeMe_seeMe;
-}> = ({ room, me }) => {
+  setRoomId: React.Dispatch<number>;
+  roomId: number;
+}> = ({ room, me, setRoomId, roomId }) => {
   const { username } = useParams<{ username: string }>();
   const u = room.participants.find((user) => user.id !== me.id);
 
   return (
-    <RoomContainer selected={u?.username === username}>
+    <RoomContainer
+      selected={u?.username === username}
+      onClick={() => setRoomId(room.id)}
+    >
       {u && (
         <>
           <AvatarAndUsername
@@ -159,21 +169,21 @@ export const DMRooms = () => {
     GQL_SEE_ROOMS
   );
 
-  const [chatWith, setChatWith] = useState(0);
   const [fetchMessages] = useLazyQuery<
     QueryGetMessages,
     QueryGetMessagesVariables
   >(GQL_GET_MESSAGE);
+  const [roomId, setRoomId] = useState(0);
 
   useEffect(() => {
     fetchMessages({
       variables: {
         input: {
-          roomId: chatWith,
+          roomId: roomId,
         },
       },
     });
-  }, [chatWith]);
+  }, [roomId]);
 
   if (meLoading || roomsLoading) {
     return <></>;
@@ -190,7 +200,13 @@ export const DMRooms = () => {
           </ListHeader>
           <ListBox>
             {rooms?.seeRooms.rooms?.map((room) => (
-              <RenderRoom key={`Room:${room.id}`} room={room} me={me?.seeMe!} />
+              <RenderRoom
+                key={`Room:${room.id}`}
+                room={room}
+                me={me?.seeMe!}
+                setRoomId={setRoomId}
+                roomId={roomId}
+              />
             ))}
           </ListBox>
         </ListWrapper>

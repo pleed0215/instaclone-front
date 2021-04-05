@@ -31,7 +31,7 @@ const GQL_CREATE_ACCOUNT = gql`
   }
 `;
 
-const GQL_LOGIN = gql`
+export const GQL_LOGIN = gql`
   mutation MutationLogin($input: LoginInput!) {
     login(input: $input) {
       ok

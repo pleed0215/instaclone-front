@@ -6,14 +6,19 @@ import { toast } from "react-toastify";
 import styled, { css } from "styled-components";
 import { makeLogout } from "../apollo/vars";
 import {
+  MutationLogin,
+  MutationLoginVariables,
+} from "../codegen/MutationLogin";
+import {
   MutationUpdateProfile,
   MutationUpdateProfileVariables,
 } from "../codegen/MutationUpdateProfile";
-import { QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
+import { QuerySeeMe, QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
 import { ButtonInactivable } from "../components/ButtonInactivable";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { useMe } from "../hooks/useMe";
 import { EMAIL_REGEX } from "../utils";
+import { GQL_LOGIN } from "./auth/auth";
 
 interface ProfileForm {
   username: string;
@@ -124,6 +129,129 @@ const ErrorMsg = styled.span`
   font-size: 12px;
   margin-top: 2px;
 `;
+
+const PasswordEdit: React.FC<{ me: QuerySeeMe_seeMe }> = ({ me }) => {
+  const {
+    register,
+    handleSubmit,
+    formState,
+    errors,
+    getValues,
+    setError,
+  } = useForm<PasswordForm>({
+    mode: "onChange",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [updateProfile] = useMutation<
+    MutationUpdateProfile,
+    MutationUpdateProfileVariables
+  >(GQL_UPDATE_PROFILE, {
+    onCompleted: (data) => {
+      setLoading(false);
+      if (data.updateProfile.ok) {
+        toast.success("패스워드가 변경 되었습니다.");
+      } else {
+        toast.error(`패스워드 변경 실패: ${data.updateProfile.error}`);
+      }
+    },
+  });
+  const [login] = useMutation<MutationLogin, MutationLoginVariables>(GQL_LOGIN);
+  const onValid = async (data: PasswordForm) => {
+    setLoading(true);
+    const { data: loginResult } = await login({
+      variables: { input: { username: me.username, password: data.current } },
+    });
+    if (loginResult?.login.ok) {
+      updateProfile({
+        variables: {
+          input: { id: me.id, password: data.password },
+        },
+      });
+    } else {
+      setError("current", { message: "현재 패스워드가 일치하지 않습니다." });
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Form onSubmit={handleSubmit(onValid)}>
+      <InputContainer>
+        <InputWrapper>
+          <label htmlFor="current">현재 패스워드</label>
+          <Input
+            ref={register({
+              required: true,
+              minLength: {
+                value: 6,
+                message: "6글자 이상 입력해주세요.",
+              },
+              maxLength: {
+                value: 18,
+                message: "18글자 이하로 입력해주세요.",
+              },
+            })}
+            name="current"
+            type="password"
+            placeholder="현재 암호를 입력하세요."
+          />
+          {errors.current && <ErrorMsg>{errors.current.message}</ErrorMsg>}
+        </InputWrapper>
+        <InputWrapper>
+          <label htmlFor="current">변경할 패스워드</label>
+          <Input
+            ref={register({
+              required: true,
+              minLength: {
+                value: 6,
+                message: "6글자 이상 입력해주세요.",
+              },
+              maxLength: {
+                value: 18,
+                message: "18글자 이하로 입력해주세요.",
+              },
+            })}
+            name="password"
+            type="password"
+            placeholder="바꾸실 암호를 입력하세요."
+          />
+          {errors.password && <ErrorMsg>{errors.password.message}</ErrorMsg>}
+        </InputWrapper>
+        <InputWrapper>
+          <label htmlFor="current">패스워드 확인</label>
+          <Input
+            ref={register({
+              required: true,
+              minLength: {
+                value: 6,
+                message: "6글자 이상 입력해주세요.",
+              },
+              maxLength: {
+                value: 18,
+                message: "18글자 이하로 입력해주세요.",
+              },
+              validate: {
+                value: (value) =>
+                  value === getValues("password") ||
+                  "패스워드가 일치하지 않습니다.",
+              },
+            })}
+            name="check"
+            type="password"
+            placeholder="암호를 확인해주세요."
+          />
+          {errors.check && <ErrorMsg>{errors.check.message}</ErrorMsg>}
+        </InputWrapper>
+        <ButtonInactivable
+          isActivate={formState.isValid && !formState.isSubmitting}
+          loading={loading}
+        >
+          패스워드 변경
+        </ButtonInactivable>
+      </InputContainer>
+    </Form>
+  );
+};
 
 const ProfileEdit: React.FC<{ me: QuerySeeMe_seeMe }> = ({ me }) => {
   const { register, handleSubmit, formState, errors } = useForm<ProfileForm>({
@@ -252,7 +380,9 @@ const ProfileEdit: React.FC<{ me: QuerySeeMe_seeMe }> = ({ me }) => {
           {errors.bio && <ErrorMsg>{errors.bio.message}</ErrorMsg>}
         </InputWrapper>
         <ButtonInactivable
-          isActivate={formState.isValid && !formState.isSubmitting}
+          isActivate={
+            formState.isValid && !formState.isSubmitting && formState.isDirty
+          }
           loading={loading}
         >
           업데이트
@@ -285,7 +415,7 @@ export const ProfileEditPage = () => {
       </TabContainer>
       <TabContent>
         {me && tab === 0 && <ProfileEdit me={me?.seeMe} />}
-        {me && tab === 1 && <TabContent>Tab 1</TabContent>}
+        {me && tab === 1 && <PasswordEdit me={me?.seeMe} />}
       </TabContent>
     </Container>
   );
