@@ -24,12 +24,14 @@ import {
   QueryGetMessages,
   QueryGetMessagesVariables,
   QueryGetMessages_fetchAndReadMessages,
+  QueryGetMessages_fetchAndReadMessages_messages,
 } from "../codegen/QueryGetMessages";
 
 import { timeSince } from "../utils";
 import {
   MutationSendMessage,
   MutationSendMessageVariables,
+  MutationSendMessage_sendMessage_message,
 } from "../codegen/MutationSendMessage";
 import { WaitMessage, WaitMessageVariables } from "../codegen/WaitMessage";
 
@@ -344,6 +346,7 @@ export const DMRooms = () => {
   );
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const chatboxRef = useRef<HTMLDivElement>(null);
   const [fetchMessages, { data: messages }] = useLazyQuery<
     QueryGetMessages,
     QueryGetMessagesVariables
@@ -351,6 +354,11 @@ export const DMRooms = () => {
   const [roomInfo, setRoomInfo] = useState<DMRoomInfo>();
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const chatboxToBottom = () => {
+    if (chatboxRef.current) {
+      chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
+    }
+  };
   const [sendMessage] = useMutation<
     MutationSendMessage,
     MutationSendMessageVariables
@@ -361,6 +369,7 @@ export const DMRooms = () => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
+      chatboxToBottom();
     },
   });
 
@@ -380,13 +389,26 @@ export const DMRooms = () => {
           cache.modify({
             id: "ROOT_QUERY",
             fields: {
-              fetchAndReadMessages(prev) {
+              fetchAndReadMessages(
+                prev: QueryGetMessages_fetchAndReadMessages
+              ) {
                 const safeMsgs = prev.messages ? prev.messages.slice(0) : [];
-                return {
-                  ok: true,
-                  error: null,
-                  messages: [result.data?.sendMessage.message, ...safeMsgs],
-                };
+                const { data } = result;
+
+                if (
+                  safeMsgs.some(
+                    (m: QueryGetMessages_fetchAndReadMessages_messages) =>
+                      m.id === data?.sendMessage?.message?.id
+                  )
+                ) {
+                  return prev;
+                } else {
+                  return {
+                    ok: true,
+                    error: null,
+                    messages: [result.data?.sendMessage.message, ...safeMsgs],
+                  };
+                }
               },
             },
           });
@@ -417,14 +439,12 @@ export const DMRooms = () => {
     }
   }, [roomInfo]);
 
-  
   useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
     skip: !Boolean(roomInfo),
     variables: {
       roomId: roomInfo?.roomId!,
     },
     onSubscriptionData({ client, subscriptionData }) {
-      console.log(subscriptionData);
       client.cache.modify({
         id: "ROOT_QUERY",
         fields: {
@@ -450,6 +470,9 @@ export const DMRooms = () => {
           },
         },
       });
+    },
+    onSubscriptionComplete() {
+      chatboxToBottom();
     },
   });
 
@@ -491,7 +514,7 @@ export const DMRooms = () => {
                 />
               </ContentHeader>
               <ContentBox>
-                <MessageBox>
+                <MessageBox ref={chatboxRef}>
                   {messages.fetchAndReadMessages.messages
                     ?.slice(0)
                     .reverse()
