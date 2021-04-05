@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { LayoutContainer } from "../components/LayoutContainer";
+import { useMe } from "../hooks/useMe";
 
 interface ProfileForm {
   username: string;
@@ -113,7 +114,13 @@ const ProfileEdit: React.FC<{ id: number }> = ({ id }) => {
 
   const onValid = (data: ProfileForm) => {};
 
-  return <Form onSubmit={handleSubmit(onValid)}></Form>;
+  return <Form onSubmit={handleSubmit(onValid)}>
+    <InputContainer>
+    <InputWrapper>
+      <Input type="text" name="" />
+    </InputWrapper>
+    </InputContainer>
+  </Form>;
 };
 
 export const ProfileEditPage = () => {
@@ -121,6 +128,7 @@ export const ProfileEditPage = () => {
     mode: "onChange",
   });
   const [tab, setTab] = useState(0); // 0 === profile, 1 === password
+  const {data: me} = useMe();
 
   const onTabClick = (index: number) => () => {
     setTab(index);
@@ -136,8 +144,8 @@ export const ProfileEditPage = () => {
           패스워드 변경
         </TabItem>
       </TabContainer>
-      {tab === 0 && <TabContent>Tab 0</TabContent>}
-      {tab === 1 && <TabContent>Tab 1</TabContent>}
+      {me && tab === 0 && <TabContent><ProfileEdit id={me?.seeMe.id}/></TabContent>}
+      {me && tab === 1 && <TabContent>Tab 1</TabContent>}
     </Container>
   );
 };
