@@ -13,7 +13,7 @@ import {
   MutationUpdateProfile,
   MutationUpdateProfileVariables,
 } from "../codegen/MutationUpdateProfile";
-import { QuerySeeMe, QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
+import { QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
 import { ButtonInactivable } from "../components/ButtonInactivable";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { useMe } from "../hooks/useMe";
@@ -393,9 +393,6 @@ const ProfileEdit: React.FC<{ me: QuerySeeMe_seeMe }> = ({ me }) => {
 };
 
 export const ProfileEditPage = () => {
-  const { register, handleSubmit, formState, errors } = useForm<PasswordForm>({
-    mode: "onChange",
-  });
   const [tab, setTab] = useState(0); // 0 === profile, 1 === password
   const { data: me } = useMe();
 
