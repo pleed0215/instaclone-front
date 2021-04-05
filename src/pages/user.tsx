@@ -243,7 +243,7 @@ export const UserPage = () => {
           <AvatarContainer onClick={onAvatarMenuClick} onBlur={onBlurAvatar}>
             <Avatar size="10x" url={user?.avatar} />
           </AvatarContainer>
-          {seeMenu && (
+          {seeMenu && user?.id === me?.seeMe.id && (
             <AvatarMenu ref={avatarMenu} onClick={onAvatarChangeClick}>
               아바타 변경
               <input

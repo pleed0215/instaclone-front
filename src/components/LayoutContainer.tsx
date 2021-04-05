@@ -22,6 +22,6 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export const LayoutContainer: React.FC = ({ children, ...props }) => {
+export const LayoutContainer: React.FC<any> = ({ children, ...props }) => {
   return <Container {...props}>{children}</Container>;
 };
