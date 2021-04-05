@@ -417,8 +417,9 @@ export const DMRooms = () => {
     }
   }, [roomInfo]);
 
+  
   useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
-    skip: true,
+    skip: !Boolean(roomInfo),
     variables: {
       roomId: roomInfo?.roomId!,
     },
