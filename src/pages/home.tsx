@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { PART_PHOTO } from "../fragments";
 import { LayoutContainer } from "../components/LayoutContainer";
@@ -16,6 +16,12 @@ import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 import { AvatarAndUsername } from "../components/Avatar";
 import { useMe } from "../hooks/useMe";
 import { Footer } from "../components/Footer";
+import { ToggleFollow } from "../components/FollowButton";
+import { GQL_SEARCH_USERS } from "./search";
+import {
+  QuerySearchUsers,
+  QuerySearchUsersVariables,
+} from "../codegen/QuerySearchUsers";
 
 const GQL_FEED = gql`
   query QuerySeeFeeds($input: SeeFeedsInput!) {
@@ -91,6 +97,11 @@ export const HomePage = () => {
     },
   });
   const { data: me } = useMe();
+  const theme = useTheme();
+  const { data: recommend } = useQuery<
+    QuerySearchUsers,
+    QuerySearchUsersVariables
+  >(GQL_SEARCH_USERS, { variables: { input: { keyword: "", limit: 10 } } });
 
   return (
     <Container>
@@ -119,14 +130,54 @@ export const HomePage = () => {
 
       <MeAndSomeuserContainer>
         <MeAndSomeUsers>
-          {me && (
-            <AvatarAndUsername
-              url={me?.seeMe.avatar}
-              username={me?.seeMe.username}
-              firstName={me?.seeMe.firstName}
-              linkable
-              size="3x"
-            />
+          {me && recommend && (
+            <>
+              <AvatarAndUsername
+                url={me?.seeMe.avatar}
+                username={me?.seeMe.username}
+                firstName={me?.seeMe.firstName}
+                linkable
+                size="3x"
+              />
+              <div
+                style={{
+                  width: "100%",
+                  height: "1px",
+                  backgroundColor: theme.color.border,
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}
+              />
+              <span style={{ fontSize: 14, marginBottom: 10 }}>추천친구</span>
+              {recommend.searchUser.map(
+                (user) =>
+                  user.id !== me.seeMe.id && (
+                    <div
+                      key={`Recommend:${user.id}`}
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <AvatarAndUsername
+                        linkable
+                        username={user.username}
+                        url={user.avatar}
+                        firstName={user.firstName}
+                        size="lg"
+                      />
+                      <div style={{ minWidth: 80, maxWidth: 80 }}>
+                        <ToggleFollow
+                          authUsername={me.seeMe.username}
+                          username={user.username}
+                          isFollowing={user.isFollowing}
+                        />
+                      </div>
+                    </div>
+                  )
+              )}
+            </>
           )}
           <Footer />
         </MeAndSomeUsers>
