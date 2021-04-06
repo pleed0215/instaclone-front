@@ -13,7 +13,7 @@ interface ToggleFollowPros {
   username: string;
 }
 
-const GQL_TOGGLE_FOLLOW = gql`
+export const GQL_TOGGLE_FOLLOW = gql`
   mutation MutationToggleFollow($input: ToggleFollowUserInput!) {
     toggleFollow(input: $input) {
       ok
