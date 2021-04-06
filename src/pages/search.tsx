@@ -37,7 +37,7 @@ const GQL_SEARCH_PHOTOS = gql`
   ${PART_PHOTO}
 `;
 
-const GQL_SEARCH_USERS = gql`
+export const GQL_SEARCH_USERS = gql`
   query QuerySearchUsers($input: SearchUserInput!) {
     searchUser(input: $input) {
       ...PartUser

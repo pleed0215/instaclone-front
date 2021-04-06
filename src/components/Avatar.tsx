@@ -81,7 +81,7 @@ const PhotoItemHeader = styled.div`
   justify-content: flex-start;
   align-items: center;
   height: 60px;
-  padding: 16px;
+  padding: 10px;
 `;
 
 const PhotoItemHeaderUserInfo = styled.div`

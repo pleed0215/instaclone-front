@@ -33,8 +33,9 @@ import {
   MutationSendMessageVariables,
 } from "../codegen/MutationSendMessage";
 import { WaitMessage, WaitMessageVariables } from "../codegen/WaitMessage";
+import { SendDM } from "../components/SendDM";
 
-const GQL_SEE_ROOMS = gql`
+export const GQL_SEE_ROOMS = gql`
   query QuerySeeRooms {
     seeRooms {
       ok
@@ -69,7 +70,7 @@ const GQL_WAIT_MESSAGE = gql`
   ${PART_MESSAGE}
 `;
 
-const GQL_SEND_MESSAGE = gql`
+export const GQL_SEND_MESSAGE = gql`
   mutation MutationSendMessage($input: SendMessageInput!) {
     sendMessage(input: $input) {
       ok
@@ -319,6 +320,7 @@ export const DMRooms = () => {
   const [roomInfo, setRoomInfo] = useState<DMRoomInfo>();
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const { username } = useParams<{ username: string }>();
   const chatboxToBottom = () => {
     if (chatboxRef.current) {
       chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
@@ -337,6 +339,9 @@ export const DMRooms = () => {
       chatboxToBottom();
     },
   });
+
+  const [seePopup, setSeePopup] = useState(false);
+  const togglePopup = () => setSeePopup(!seePopup);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -404,6 +409,21 @@ export const DMRooms = () => {
     }
   }, [roomInfo, fetchMessages]);
 
+  useEffect(() => {
+    function fromParamsInit() {
+      const room = rooms?.seeRooms.rooms?.find((room) =>
+        room.participants.some((user) => user.username === username)
+      );
+      const withWho = room?.participants.find(
+        (user) => user.id !== me?.seeMe.id
+      );
+      if (room && withWho) {
+        setRoomInfo({ roomId: room.id, with: withWho });
+      }
+    }
+    fromParamsInit();
+  }, [username]);
+
   useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
     skip: !Boolean(roomInfo),
     variables: {
@@ -449,9 +469,10 @@ export const DMRooms = () => {
           <ListHeader>
             <div />
             <SpanUsername>{me?.seeMe.username}</SpanUsername>
-            <button>
-              <FontAwesomeIcon icon={faEdit} size="lg" />
-            </button>
+            <div style={{ position: "relative", cursor: "pointer" }}>
+              <FontAwesomeIcon icon={faEdit} size="lg" onClick={togglePopup} />
+              {seePopup && <SendDM onClose={togglePopup} />}
+            </div>
           </ListHeader>
           <ListBox>
             {rooms?.seeRooms.rooms?.map((room) => (

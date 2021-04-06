@@ -249,7 +249,7 @@ export const Header: React.FC = () => {
           <MenuLink to="/" onClick={onMenuClicked(0)}>
             <IconMenu icon={clickedMenu === 0 ? faImage : farImage} size="lg" />
           </MenuLink>
-          <MenuLink to="/direct/inbox" onClick={onMenuClicked(1)}>
+          <MenuLink to="/direct" onClick={onMenuClicked(1)}>
             <IconMenu
               icon={clickedMenu === 1 ? faPaperPlane : farPaperPlane}
               size="lg"
