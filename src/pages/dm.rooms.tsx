@@ -31,7 +31,6 @@ import { timeSince } from "../utils";
 import {
   MutationSendMessage,
   MutationSendMessageVariables,
-  MutationSendMessage_sendMessage_message,
 } from "../codegen/MutationSendMessage";
 import { WaitMessage, WaitMessageVariables } from "../codegen/WaitMessage";
 
@@ -301,44 +300,6 @@ const RenderRoom: React.FC<{
   );
 };
 
-const WaitNewMessage: React.FC<{ roomId: number }> = ({ roomId }) => {
-  useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
-    skip: true,
-    variables: {
-      roomId,
-    },
-    onSubscriptionData({ client, subscriptionData }) {
-      console.log(subscriptionData);
-      client.cache.modify({
-        id: "ROOT_QUERY",
-        fields: {
-          fetchAndReadMessages(prev: QueryGetMessages_fetchAndReadMessages) {
-            const prevMessages = prev.messages ? prev.messages.slice(0) : [];
-
-            if (
-              prevMessages.some(
-                (m) => m.id === subscriptionData.data?.waitNewMessage?.id
-              )
-            ) {
-              return prev;
-            } else {
-              return {
-                ok: true,
-                error: null,
-                messages: [
-                  subscriptionData.data?.waitNewMessage,
-                  ...prevMessages,
-                ],
-              };
-            }
-          },
-        },
-      });
-    },
-  });
-  return <div></div>;
-};
-
 export const DMRooms = () => {
   const { data: me, loading: meLoading } = useMe();
   const { data: rooms, loading: roomsLoading } = useQuery<QuerySeeRooms>(
@@ -350,7 +311,11 @@ export const DMRooms = () => {
   const [fetchMessages, { data: messages }] = useLazyQuery<
     QueryGetMessages,
     QueryGetMessagesVariables
-  >(GQL_GET_MESSAGE);
+  >(GQL_GET_MESSAGE, {
+    onCompleted: () => {
+      chatboxToBottom();
+    },
+  });
   const [roomInfo, setRoomInfo] = useState<DMRoomInfo>();
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
@@ -437,7 +402,7 @@ export const DMRooms = () => {
         },
       });
     }
-  }, [roomInfo]);
+  }, [roomInfo, fetchMessages]);
 
   useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
     skip: !Boolean(roomInfo),
@@ -470,9 +435,8 @@ export const DMRooms = () => {
           },
         },
       });
-    },
-    onSubscriptionComplete() {
-      chatboxToBottom();
+      // 트릭..?
+      setTimeout(() => chatboxToBottom(), 200);
     },
   });
 
