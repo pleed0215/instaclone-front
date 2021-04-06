@@ -87,6 +87,7 @@ const TabContent = styled.div`
   flex-direction: column;
   width: 100%;
   border: 1px solid ${(props) => props.theme.color.border};
+  border-left: none;
   background-color: ${(props) => props.theme.background.secondary};
   min-height: 50vh;
   padding: 10px;
