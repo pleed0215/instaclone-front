@@ -75,6 +75,7 @@ const SpanTimeSince = styled.span`
 export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
   const [canSee, setCanSee] = useState(false);
   const [menuSee, setMenuSee] = useState(false);
+  const [focus, setFocus] = useState(false);
   const theme = useTheme();
   return (
     <>
@@ -103,7 +104,11 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
         </div>
         <Photo url={photo.file} />
         <PhotoContentContainer>
-          <Actions photoId={photo.id} isLiked={photo.isLiked} />
+          <Actions
+            photoId={photo.id}
+            isLiked={photo.isLiked}
+            setFocus={setFocus}
+          />
           <SpanNumLike>좋아요 {photo.numLikes}개</SpanNumLike>
           <span style={{ fontWeight: "bold" }}>{photo.user.username}</span>
           <Collapse collapsed={true} text={"...더보기"}>
@@ -131,7 +136,7 @@ export const PhotoItem: React.FC<PhotoItemProps> = ({ photo }) => {
             backgroundColor: theme.color.border,
           }}
         />
-        <WriteComment photoId={photo.id} />
+        <WriteComment photoId={photo.id} focus={focus} />
       </PhotoItemWrapper>
     </>
   );

@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { faKissBeam } from "@fortawesome/free-regular-svg-icons";
 import { EmojiButton } from "@joeattardi/emoji-button";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -62,13 +62,17 @@ const SubmitButton = styled(ButtonInactivable)`
 
 interface WriteCommentProps {
   photoId: number;
+  focus?: boolean;
 }
 
 interface CommentForm {
   payload: string;
 }
 
-export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
+export const WriteComment: React.FC<WriteCommentProps> = ({
+  photoId,
+  focus,
+}) => {
   const {
     register,
     handleSubmit,
@@ -90,6 +94,7 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
   const emojiButton = useRef<HTMLButtonElement>(null);
   const picker = new EmojiButton();
   const ref = register({ required: true, minLength: 1 });
+  let textarea: HTMLTextAreaElement | null = null;
 
   picker.on("emoji", (selection) => {
     setValue("payload", getValues("payload") + selection.emoji, {
@@ -131,13 +136,27 @@ export const WriteComment: React.FC<WriteCommentProps> = ({ photoId }) => {
     });
   };
 
+  useEffect(() => {
+    if (textarea && focus) {
+      textarea.focus();
+    }
+  }, [focus, textarea]);
+
   return (
     <WriteCommentContainer>
       <FormComment onSubmit={handleSubmit(onSubmit)}>
         <ButtonEmoji ref={emojiButton} onClick={onEmojiButtonClicked}>
           <FWIcon icon={faKissBeam} size="2x" />
         </ButtonEmoji>
-        <TextareaComment ref={ref} name="payload" placeholder="댓글 달기..." />
+        <TextareaComment
+          ref={(e) => {
+            ref(e);
+            textarea = e;
+          }}
+          name="payload"
+          placeholder="댓글 달기..."
+          autoFocus={focus}
+        />
         <SubmitButton
           isActivate={!loading && formState.isValid}
           loading={loading}

@@ -4,12 +4,14 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { LikeButton } from "./LikeButton";
 
 interface ActionsProp {
   photoId: number;
   isLiked: boolean;
+  setFocus: React.Dispatch<boolean>;
 }
 
 const PhotoMenuContainer = styled.div`
@@ -26,14 +28,33 @@ const PhotoMenuItem = styled(FontAwesomeIcon)`
     margin-right: 1rem;
   }
   padding: 5px;
+  cursor: pointer;
 `;
 
-export const Actions: React.FC<ActionsProp> = ({ photoId, isLiked }) => {
+export const Actions: React.FC<ActionsProp> = ({
+  photoId,
+  isLiked,
+  setFocus,
+}) => {
+  const history = useHistory();
   return (
     <PhotoMenuContainer>
       <LikeButton photoId={photoId} isLike={isLiked} />
-      <PhotoMenuItem icon={farPaperPlane} size="2x" />
-      <PhotoMenuItem icon={farComment} size="2x" />
+      <PhotoMenuItem
+        icon={farPaperPlane}
+        size="2x"
+        onClick={() => history.push(`/direct`)}
+      />
+      <PhotoMenuItem
+        icon={farComment}
+        size="2x"
+        onClick={() => {
+          setFocus(true);
+          setTimeout(() => {
+            setFocus(false);
+          }, 500);
+        }}
+      />
     </PhotoMenuContainer>
   );
 };

@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { MouseEvent, useEffect, useRef } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   QueryPhotoDetail,
@@ -154,6 +154,7 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
     }
   };
   const parentBox = useRef<HTMLDivElement>(null);
+  const [focus, setFocus] = useState(false);
   const { data, loading } = useQuery<
     QueryPhotoDetail,
     QueryPhotoDetailVariables
@@ -225,13 +226,14 @@ export const PhotoDetail: React.FC<PhotoDetailProp> = ({
                     <Actions
                       photoId={data.seePhotoDetail.photo?.id!}
                       isLiked={data.seePhotoDetail.photo?.isLiked!}
+                      setFocus={setFocus}
                     />
                     <SpanNumLike>
                       좋아요 {data.seePhotoDetail.photo?.numLikes}개
                     </SpanNumLike>
                   </ActionBox>
                   <CommentBox>
-                    <WriteComment photoId={photoId} />
+                    <WriteComment photoId={photoId} focus={focus} />
                   </CommentBox>
                 </ContentWrapper>
               </InnerBox>
