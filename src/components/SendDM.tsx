@@ -20,6 +20,7 @@ import { Avatar } from "./Avatar";
 import { ButtonInactivable } from "./ButtonInactivable";
 import { ToggleFollow } from "./FollowButton";
 import { Loader } from "./Loader";
+import { useHistory } from "react-router";
 
 const Container = styled.div`
   width: 250px;
@@ -157,6 +158,7 @@ export const SendDM: React.FC<SeeDMProp> = ({ onClose }) => {
   >(GQL_SEARCH_USERS);
   const [toUser, setToUser] = useState<QuerySearchUsers_searchUser>();
   const [message, setMessage] = useState("");
+  const history = useHistory();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFind(e.target.value);
@@ -177,9 +179,10 @@ export const SendDM: React.FC<SeeDMProp> = ({ onClose }) => {
     MutationSendMessage,
     MutationSendMessageVariables
   >(GQL_SEND_MESSAGE, {
-    onCompleted: () => {
+    onCompleted: (data) => {
       setLoading(false);
       onClose();
+      history.push(`/direct/${toUser?.username}`);
     },
   });
   const { data: me } = useMe();
