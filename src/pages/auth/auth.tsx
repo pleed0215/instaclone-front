@@ -15,8 +15,10 @@ import {
   MutationLogin,
   MutationLoginVariables,
 } from "../../codegen/MutationLogin";
+
 import { BarWithText } from "../../components/BarAndText";
 import { ButtonInactivable } from "../../components/ButtonInactivable";
+
 import { HelmetOnlyTitle } from "../../components/HelmetOnlyTitle";
 import { LayoutContainer } from "../../components/LayoutContainer";
 
@@ -202,6 +204,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ isCreating = true }) => {
       },
     }
   );
+
   const onSubmit = () => {
     const { username, password, firstName, email } = getValues();
     setLoading(true);

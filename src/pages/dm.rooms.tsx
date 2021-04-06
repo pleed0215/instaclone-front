@@ -422,7 +422,7 @@ export const DMRooms = () => {
       }
     }
     fromParamsInit();
-  }, [username]);
+  }, [username, rooms?.seeRooms.rooms, me?.seeMe.id]);
 
   useSubscription<WaitMessage, WaitMessageVariables>(GQL_WAIT_MESSAGE, {
     skip: !Boolean(roomInfo),

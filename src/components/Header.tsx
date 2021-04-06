@@ -1,7 +1,6 @@
 import { useReactiveVar } from "@apollo/client";
 import {
   faImage,
-  faCompass,
   faMoon,
   faSearch,
   faSignOutAlt,
@@ -13,7 +12,6 @@ import {
 
 import {
   faImage as farImage,
-  faCompass as farCompass,
   faPaperPlane as farPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -255,12 +253,13 @@ export const Header: React.FC = () => {
               size="lg"
             />
           </MenuLink>
-          <MenuLink to="/activity" onClick={onMenuClicked(2)}>
+          {/* <MenuLink to="/activity" onClick={onMenuClicked(2)}>
             <IconMenu
               icon={clickedMenu === 2 ? faCompass : farCompass}
               size="lg"
             />
-          </MenuLink>
+          </MenuLink>*/}
+
           <AvatarWrapper
             onClick={() => {
               onMenuClicked(3)();
@@ -284,8 +283,8 @@ export const Header: React.FC = () => {
                 <AvatarMenuSeperator />
                 <AvatarMenuItem
                   onClick={() => {
-                    history.push("/");
                     makeLogout();
+                    history.push("/");
                   }}
                 >
                   <AvatarMenuItemIcon icon={faSignOutAlt} size="lg" />
