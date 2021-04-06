@@ -15,6 +15,7 @@ import {
 } from "../codegen/MutationUpdateProfile";
 import { QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
 import { ButtonInactivable } from "../components/ButtonInactivable";
+import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { useMe } from "../hooks/useMe";
 import { EMAIL_REGEX } from "../utils";
@@ -176,6 +177,7 @@ const PasswordEdit: React.FC<{ me: QuerySeeMe_seeMe }> = ({ me }) => {
 
   return (
     <Form onSubmit={handleSubmit(onValid)}>
+      <HelmetOnlyTitle title="Update Profile" />
       <InputContainer>
         <InputWrapper>
           <label htmlFor="current">현재 패스워드</label>

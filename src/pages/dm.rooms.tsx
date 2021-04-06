@@ -34,6 +34,7 @@ import {
 } from "../codegen/MutationSendMessage";
 import { WaitMessage, WaitMessageVariables } from "../codegen/WaitMessage";
 import { SendDM } from "../components/SendDM";
+import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 
 export const GQL_SEE_ROOMS = gql`
   query QuerySeeRooms {
@@ -465,6 +466,7 @@ export const DMRooms = () => {
   } else {
     return (
       <Container>
+        <HelmetOnlyTitle title="Messages" />
         <ListWrapper>
           <ListHeader>
             <div />

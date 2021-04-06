@@ -15,6 +15,7 @@ import {
 } from "../codegen/QuerySeeProfile";
 import { Avatar } from "../components/Avatar";
 import { ToggleFollow } from "../components/FollowButton";
+import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { PhotoDetail } from "../components/PhotoDetail";
 import { PART_USER } from "../fragments";
@@ -240,6 +241,7 @@ export const UserPage = () => {
 
     return (
       <Container>
+        <HelmetOnlyTitle title={`${user.username}'s page`} />
         <ProfileContainer>
           <AvatarContainer onClick={onAvatarMenuClick} onBlur={onBlurAvatar}>
             <Avatar size="10x" url={user?.avatar} />

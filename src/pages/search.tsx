@@ -21,6 +21,7 @@ import {
 import { QuerySeeMe_seeMe } from "../codegen/QuerySeeMe";
 import { AvatarAndUsername } from "../components/Avatar";
 import { ToggleFollow } from "../components/FollowButton";
+import { HelmetOnlyTitle } from "../components/HelmetOnlyTitle";
 import { LayoutContainer } from "../components/LayoutContainer";
 import { Loader } from "../components/Loader";
 import { PhotoItem } from "../components/PhotoItem";
@@ -188,9 +189,9 @@ export const SearchPage = () => {
   });
 
   if (params && hashtags && users && photos && me) {
-    console.log(hashtags);
     return (
       <Container>
+        <HelmetOnlyTitle title={`Search: ${params}`} />
         <SpanSearchTerm>검색 결과: '{params}'</SpanSearchTerm>
         <SpanSearchTerm style={{ marginBottom: 10 }}>
           해쉬태그 검색 결과
